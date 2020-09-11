@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title> Log in </title>
+        <link rel="stylesheet" href="../static/bootstrap-4.5.2-dist/css/bootstrap.min.css"
+              th:href="@{/bootstrap-4.5.2-dist/css/bootstrap.min.css}">
+        <link rel="stylesheet" href="../static/css/main.css" th:href="@{/css/main.css}">
+        <link rel="stylesheet" href="../static/font/font-awesome-4.7.0/css/font-awesome.min.css"
+              th:href="@{/font/font-awesome-4.7.0/css/font-awesome.min.css}">
+    </head>
+    <body>
+           
+        <header>
+            <nav class="navbar navbar-dark bg-dark navbar-height">
+                <a class="navbar-brand" href="/">
+                    <div class="brand-sizing">
+                        <i class="fa fa-circle fa-xs"></i>
+                        <i class="fa fa-circle fa-xs"></i>
+                        <i class="fa fa-circle fa-xs"></i>
+                    </div>
+                </a>
+                <label class="navbar-center">Pay My Buddy</label>
+            </nav>
+        </header>
+        <div class="container">  
+            <div class="custom container-fluid d-flex align-items-center justify-content-center">
+              <div class="row border border-dark border-round">
+    
+                <div class="col mt-5 col-xs-12 col-md-12 col-lg-12 text-center">
+                    <button type="button" class="btn btn-success">Pay My Buddy</button>
+        
+                    <form th:action="@{/login}" method="post">
+              
+          	            <div class="form-group form-group-lg setmargintop">
+                            <div class="input-container">
+                                <i class="fa fa-envelope icon"></i>
+                                <input class="form-control input-lg"
+                                       type="text" id="username" name="username" placeholder="Email">
+                            </div>
+                        </div>
+
+                        <div class="form-group setmargintop">
+            	            <div class="input-container ">
+                                <i class="fa fa-asterisk icon"></i>
+                                <input type="password" class="form-control input-lg"
+                                       id="password" name="password" placeholder="Password" />
+                            </div>
+                        </div>
+                        <div class="form-group setmargintop">
+                            <div class="form-check">
+                                <input type="checkbox" id="remember_me" name="_remember_me" class="form-check-input" />
+                                <label class="form-check-label" for="remember_me" >Remember me</label>
+                            </div>
+                        </div>  
+                        <div class="form-group setdoublemargintop setmarginbottom">
+                            <input type="submit" class="btn btn-primary btn-lg text-center" id="submit" name="_submit" value="Login" />
+                        </div>
+                    </form>
+                    <p th:if="${loginError}" class="error">Wrong proBuddyUser or password</p>
+                </div>
+              </div>
+            </div>
+        </div>
+    </body>
+</html>
