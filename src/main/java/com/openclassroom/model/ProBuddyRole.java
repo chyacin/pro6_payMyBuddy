@@ -3,20 +3,24 @@ package com.openclassroom.model;
 import javax.persistence.*;
 import java.util.Set;
 
+
 @Entity
 public class ProBuddyRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Integer id;
+
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(targetEntity= ProBuddyUser.class)
     private Set<ProBuddyUser> proBuddyUsers;
+
+    public ProBuddyRole(){
+
+    }
 
     public ProBuddyRole(String name) {
         this.name = name;
-
     }
 
     @Override
@@ -44,11 +48,11 @@ public class ProBuddyRole {
         this.name = name;
     }
 
-    public Set<ProBuddyUser> getUsers(){
+    public Set<ProBuddyUser> getProBuddyUsers(){
         return proBuddyUsers;
     }
 
-    public void setUsers(Set<ProBuddyUser> proBuddyUsers) {
+    public void setProBuddyUsers(Set<ProBuddyUser> proBuddyUsers) {
         this.proBuddyUsers = proBuddyUsers;
     }
 }

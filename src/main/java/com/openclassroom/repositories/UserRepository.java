@@ -6,5 +6,5 @@ import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<ProBuddyUser, Integer> {
 
-   ProBuddyUser getUserByEmail(@Param("email") String email);
+   ProBuddyUser findByEmail(String email);
 }

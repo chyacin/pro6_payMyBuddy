@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 @Configuration
 @EnableWebSecurity
 
@@ -44,25 +45,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers().hasAnyAuthority("Admin", "User")
-                .antMatchers().hasAnyAuthority("User")
+                .antMatchers("/").permitAll()
+                .antMatchers("/login**").permitAll()
+                .antMatchers("/perform_login").permitAll()
+                .antMatchers("/register").permitAll()
+                .antMatchers("/admin**").hasRole("Admin")
+                .antMatchers("/user**").hasAnyRole("Admin", "User")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
+                .loginPage("/login")
+                .loginProcessingUrl("/perform_login")
+                .usernameParameter("email")
+                .passwordParameter("password")
                 .and()
                 .logout().permitAll();
     }
 }
-//public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
-//
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-//
-//        auth.inMemoryAuthentication()
-//            .withUser("johnboy@email.com").password("{noop}johnboy10").roles("USER")
-//            .and()
-//            .withUser("admin@email.com").password("{noop}admin123").roles("ADMIN", "USER");
-//    }
+
+
 //
 //    @Override
 //    public void configure(HttpSecurity http) throws Exception {
@@ -80,10 +81,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                    .permitAll();
 //
 //    }
-///*
+///
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {
 //        return new BCryptPasswordEncoder();
 //    }
-// */
+//
 //}

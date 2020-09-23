@@ -38,6 +38,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public ProBuddyUser findByEmail(String email) {
-        return userRepository.getUserByEmail(email);
+        return userRepository.findByEmail(email);
     }
 }

@@ -10,7 +10,6 @@ public class ProBuddyContacts {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Integer id;
     private String firstUserId;
     private String secondUserId;

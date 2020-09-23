@@ -11,7 +11,6 @@ import javax.persistence.Id;
 public class ProBuddyLogin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Integer id;
     private Integer userID;
     private Timestamp date;

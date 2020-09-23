@@ -11,10 +11,10 @@ public class ProBuddyAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String bankName;
-    private Integer userID;
-    private Integer id;
-    private Double balance;
+    private int userID;
+    private double balance;
 
     public ProBuddyAccount() {
     }
@@ -45,15 +45,15 @@ public class ProBuddyAccount {
         this.bankName = bankName;
     }
 
-    public Integer getUserID() {
+    public int getUserID() {
         return userID;
     }
 
-    public void setUserID(Integer userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -61,7 +61,7 @@ public class ProBuddyAccount {
         this.id = id;
     }
 
-    public Double getBalance() {
+    public double getBalance() {
         return balance;
     }
 
