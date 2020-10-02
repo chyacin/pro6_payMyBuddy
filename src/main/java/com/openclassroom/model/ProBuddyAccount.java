@@ -12,6 +12,7 @@ public class ProBuddyAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String bankName;
     private int userID;
     private double balance;

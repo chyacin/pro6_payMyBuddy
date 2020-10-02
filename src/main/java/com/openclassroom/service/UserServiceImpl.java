@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -28,7 +26,7 @@ public class UserServiceImpl implements UserService{
         Optional<ProBuddyRole> role = roleRepository.findById(1);
 
         if (role.get() != null) {
-            List<ProBuddyRole> proBuddyRoleList = new ArrayList<>();
+            Set<ProBuddyRole> proBuddyRoleList = new HashSet<>();
             proBuddyRoleList.add(role.get());
             proBuddyUser.setRoles(proBuddyRoleList);
         }

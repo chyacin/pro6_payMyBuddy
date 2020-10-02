@@ -11,6 +11,7 @@ public class ProBuddyTransactions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private Integer senderAccID;
     private Integer receiverAccID;
@@ -18,7 +19,6 @@ public class ProBuddyTransactions {
     private Integer senderUserID;
     private String senderName;
     private Double amount;
-    private Integer id;
     private Integer fee;
     private Timestamp date;
 

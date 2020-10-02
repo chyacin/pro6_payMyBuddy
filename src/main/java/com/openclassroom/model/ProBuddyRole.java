@@ -1,6 +1,7 @@
 package com.openclassroom.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -8,11 +9,13 @@ import java.util.Set;
 public class ProBuddyRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer role_id;
 
     private String name;
 
-    @ManyToMany(targetEntity= ProBuddyUser.class)
+    @ManyToMany(mappedBy = "proBuddyRole")
+  //  @ManyToMany(targetEntity= ProBuddyUser.class)
+    //@OneToMany (mappedBy = "proBuddyRole", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ProBuddyUser> proBuddyUsers;
 
     public ProBuddyRole(){
@@ -26,18 +29,18 @@ public class ProBuddyRole {
     @Override
     public String toString() {
         return "Role{" +
-                "id=" + id +
+                "id=" + role_id +
                 ", name='" + name + '\'' +
                 ", users=" + proBuddyUsers +
                 '}';
     }
 
     public Integer getId() {
-        return id;
+        return role_id;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.role_id = id;
     }
 
     public String getName() {
@@ -55,4 +58,6 @@ public class ProBuddyRole {
     public void setProBuddyUsers(Set<ProBuddyUser> proBuddyUsers) {
         this.proBuddyUsers = proBuddyUsers;
     }
+
+
 }

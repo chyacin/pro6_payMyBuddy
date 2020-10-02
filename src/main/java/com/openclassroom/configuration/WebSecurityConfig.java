@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider());
     }
 
-    @Override
+   /* @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
@@ -61,26 +61,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().permitAll();
     }
+}*/
+
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/login-error").permitAll()
+                .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/user").hasRole("USER")
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/landingPage", true)
+                .failureUrl("/login-error")
+                .permitAll();
+
+    }
 }
-
-
-//
-//    @Override
-//    public void configure(HttpSecurity http) throws Exception {
-//         http.httpBasic()
-//                 .and().authorizeRequests()
-//                 .antMatchers( "/login").permitAll()
-//                 .antMatchers( "/login-error").permitAll()
-//                 .antMatchers("/admin").hasRole("ADMIN")
-//                 .antMatchers("/user").hasRole("USER")
-//                 .anyRequest().authenticated()
-//                    .and()
-//                 .formLogin()
-//                    .loginPage("/login")
-//                    .failureUrl("/login-error")
-//                    .permitAll();
-//
-//    }
 ///
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {

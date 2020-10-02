@@ -2,13 +2,15 @@ package com.openclassroom.model;
 
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 public class ProBuddyUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer user_id;
+
     private String firstName;
     private String lastName;
     private String address;
@@ -16,18 +18,21 @@ public class ProBuddyUser {
     private Integer age;
     private String phone;
     private String nationalID;
-    private Integer id;
     private String password;
     private String accountNo;
-    private List<ProBuddyRole> proBuddyRoles;
+
+    @ManyToMany
+   // @ManyToOne
+    //@JoinColumn(name = "fk_role_id", nullable = false)
+    @JoinTable( name = "pro_user_role" , joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<ProBuddyRole> proBuddyRole;
 
     protected ProBuddyUser() {
     }
 
 
-    public ProBuddyUser(String firstName, String lastName, String address,
-                        String email, Integer age, String phone, String nationalID,
-                        Integer id, String password, String accountNo, List<ProBuddyRole> proBuddyRoles) {
+    public ProBuddyUser(String firstName, String lastName, String address, String email, Integer age,
+                        String phone, String nationalID, String password, String accountNo, Set<ProBuddyRole> proBuddyRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -35,10 +40,25 @@ public class ProBuddyUser {
         this.age = age;
         this.phone = phone;
         this.nationalID = nationalID;
-        this.id = id;
         this.password = password;
         this.accountNo = accountNo;
-        this.proBuddyRoles = proBuddyRoles;
+        this.proBuddyRole = proBuddyRole;
+    }
+
+    public ProBuddyUser(String firstName, String lastName, String address,
+                        String email, Integer age, String phone, String nationalID,
+                        Integer id, String password, String accountNo, Set<ProBuddyRole> proBuddyRole) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.email = email;
+        this.age = age;
+        this.phone = phone;
+        this.nationalID = nationalID;
+        this.user_id = id;
+        this.password = password;
+        this.accountNo = accountNo;
+        this.proBuddyRole = proBuddyRole;
     }
 
     @Override
@@ -51,10 +71,10 @@ public class ProBuddyUser {
                 ", age=" + age +
                 ", phone='" + phone + '\'' +
                 ", nationalID='" + nationalID + '\'' +
-                ", id=" + id +
+                ", id=" + user_id +
                 ", password='" + password + '\'' +
                 ", accountNo='" + accountNo + '\'' +
-                ", roles='" + proBuddyRoles + '\'' +
+                ", roles='" + proBuddyRole + '\'' +
                 '}';
     }
 
@@ -115,11 +135,11 @@ public class ProBuddyUser {
     }
 
     public Integer getId() {
-        return id;
+        return user_id;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.user_id = id;
     }
 
     public String getPassword() {
@@ -138,7 +158,8 @@ public class ProBuddyUser {
         this.accountNo = accountNo;
     }
 
-    public List<ProBuddyRole> getRoles() {return proBuddyRoles;}
+    public Set<ProBuddyRole> getRoles() {return proBuddyRole;}
 
-    public void setRoles(List<ProBuddyRole> proBuddyRoles) {this.proBuddyRoles = proBuddyRoles;}
+    public void setRoles(Set<ProBuddyRole
+            > proBuddyRoles) {this.proBuddyRole = proBuddyRole;}
 }
