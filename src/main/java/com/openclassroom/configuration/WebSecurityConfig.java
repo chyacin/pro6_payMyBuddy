@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -42,31 +43,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider());
     }
 
-   /* @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/login**").permitAll()
-                .antMatchers("/perform_login").permitAll()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/admin**").hasRole("Admin")
-                .antMatchers("/user**").hasAnyRole("Admin", "User")
-                .anyRequest().authenticated()
-                .and()
-                .formLogin().permitAll()
-                .loginPage("/login")
-                .loginProcessingUrl("/perform_login")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .and()
-                .logout().permitAll();
+   @Override
+   public void configure (WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers("/static/**");
     }
-}*/
 
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/css/**").permitAll()
+                .antMatchers("/js/**").permitAll()
+                .antMatchers("/font/**").permitAll()
+                .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/login-error").permitAll()
                 .antMatchers("/admin").hasRole("ADMIN")
@@ -75,16 +65,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/landingPage", true)
+                .defaultSuccessUrl("/", true)
                 .failureUrl("/login-error")
                 .permitAll();
 
     }
 }
-///
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//
-//}
+
