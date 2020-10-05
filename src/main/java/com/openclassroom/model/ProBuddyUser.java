@@ -21,7 +21,7 @@ public class ProBuddyUser {
     private String password;
     private String accountNo;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
    // @ManyToOne
     //@JoinColumn(name = "fk_role_id", nullable = false)
     @JoinTable( name = "pro_user_role" , joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
