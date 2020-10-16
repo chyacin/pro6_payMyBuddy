@@ -1,10 +1,7 @@
 package com.openclassroom.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class ProBuddyAccount {
@@ -14,13 +11,17 @@ public class ProBuddyAccount {
     private int id;
 
     private String bankName;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_user_id")
     private int userID;
+
     private double balance;
 
     public ProBuddyAccount() {
     }
 
-    public ProBuddyAccount(String bankName, Integer userID, Integer id, Double balance){
+    public ProBuddyAccount(String bankName, int userID, int id, Double balance){
         this.bankName = bankName;
         this.userID = userID;
         this.id = id;

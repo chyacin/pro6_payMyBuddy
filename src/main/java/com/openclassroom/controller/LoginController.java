@@ -20,7 +20,6 @@ public class LoginController {
 	@GetMapping(value = "/")
 	@RolesAllowed("USER")
 	public String getUser() {
-
 		return "landingPage";
 	}
 

@@ -1,10 +1,130 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Landing page</title>
+    <meta charset="UTF-8" />
+    <title> Log in </title>
+    <link rel="stylesheet" href="bootstrap-4.5.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="font/font-awesome-4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="bootstrap-4.5.2-dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1>Welcome, proBuddyUser</h1>
+
+<header>
+    <nav class="navbar navbar-dark bg-dark navbar-height">
+        <a class="navbar-brand" href="/">
+            <div class="brand-sizing">
+                <i class="fa fa-circle fa-xs"></i>
+                <i class="fa fa-circle fa-xs"></i>
+                <i class="fa fa-circle fa-xs"></i>
+            </div>
+        </a>
+        <label class="navbar-center">Pay My Buddy</label>
+    </nav>
+</header>
+<nav class="navbar navbar-light bg-white navbar-height">
+    <button type="button" class="btn btn-success">Pay My Buddy</button><!-- left-->
+    <ul class="nav"><!-- right-->
+        <li class="nav-item">
+            <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Transfer</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="#">Log off</a>
+        </li>
+    </ul>
+</nav>
+<nav class="navbar navbar-light bg-light navbar-height">
+    <ul class="nav"><!-- left-->
+        <li class="nav-item">
+            <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">/</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#">Transfer</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-sm-6">
+            <p>Send money</p>
+        </div>
+        <div class="col-sm-6 text-right">
+            <button type="button" class="btn btn-primary">Add connection</button>
+        </div>
+    </div>
+
+    <div class="row border item">
+        <div class="col-sm-4 dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select a connection
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <input type="currency">
+        </div>
+        <div class="col-sm-4 text-right">
+            <button type="button" class="btn btn-success">Pay</button>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Connections</th>
+                <th>Description</th>
+                <th>Amount</th>
+            </tr>
+            </thead>
+            <tbody th:remove="all-but-first">
+            <tr>
+                <td>transaction1</td>
+                <td>Restaurant bill</td>
+                <td>$50</td>
+            </tr>
+            <tr>
+                <td>transaction2</td>
+                <td>Cable bill</td>
+                <td>$20</td>
+            </tr>
+            <tr>
+                <td>transaction3</td>
+                <td>Cinema</td>
+                <td>$5</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="containerPageNumber" id="paginationAlignment">
+        <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#">&raquo;</a>
+        </div>
+    </div>
 </body>
 </html>

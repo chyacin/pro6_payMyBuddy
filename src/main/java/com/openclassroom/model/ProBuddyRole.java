@@ -9,7 +9,7 @@ import java.util.Set;
 public class ProBuddyRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer role_id;
+    private int role_id;
 
     private String name;
 
@@ -35,11 +35,11 @@ public class ProBuddyRole {
                 '}';
     }
 
-    public Integer getId() {
+    public int getId() {
         return role_id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.role_id = id;
     }
 

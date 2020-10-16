@@ -9,21 +9,21 @@ public class ProBuddyUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer user_id;
+    private int user_id;
 
     private String firstName;
     private String lastName;
     private String address;
     private String email;
-    private Integer age;
+    private int age;
     private String phone;
     private String nationalID;
     private String password;
-    private String accountNo;
 
-    @ManyToMany
-   // @ManyToOne
-    //@JoinColumn(name = "fk_role_id", nullable = false)
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private int accountNo;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable( name = "pro_user_role" , joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<ProBuddyRole> proBuddyRole;
 
@@ -31,8 +31,8 @@ public class ProBuddyUser {
     }
 
 
-    public ProBuddyUser(String firstName, String lastName, String address, String email, Integer age,
-                        String phone, String nationalID, String password, String accountNo, Set<ProBuddyRole> proBuddyRole) {
+    public ProBuddyUser(String firstName, String lastName, String address, String email, int age,
+                        String phone, String nationalID, String password, int accountNo, Set<ProBuddyRole> proBuddyRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -47,7 +47,7 @@ public class ProBuddyUser {
 
     public ProBuddyUser(String firstName, String lastName, String address,
                         String email, Integer age, String phone, String nationalID,
-                        Integer id, String password, String accountNo, Set<ProBuddyRole> proBuddyRole) {
+                        Integer id, String password, int accountNo, Set<ProBuddyRole> proBuddyRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -150,11 +150,11 @@ public class ProBuddyUser {
         this.password = password;
     }
 
-    public String getAccountNo() {
+    public int getAccountNo() {
         return accountNo;
     }
 
-    public void setAccountNo(String accountNo) {
+    public void setAccountNo(int accountNo) {
         this.accountNo = accountNo;
     }
 

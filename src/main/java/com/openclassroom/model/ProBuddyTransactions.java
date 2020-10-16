@@ -1,9 +1,6 @@
 package com.openclassroom.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
@@ -11,22 +8,31 @@ public class ProBuddyTransactions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
-    private Integer senderAccID;
-    private Integer receiverAccID;
-    private Integer receiverUserID;
-    private Integer senderUserID;
+    @ManyToOne
+    @JoinColumn(name ="fk_sender_acc_id")
+    private int senderAccID;
+    @ManyToOne
+    @JoinColumn(name ="fk_receiver_acc_id")
+    private int receiverAccID;
+    @ManyToOne
+    @JoinColumn(name ="fk_receiver_user_id")
+    private int receiverUserID;
+    @ManyToOne
+    @JoinColumn(name ="fk_sender_user_id")
+    private int senderUserID;
+
     private String senderName;
     private Double amount;
-    private Integer fee;
+    private int fee;
     private Timestamp date;
 
     protected ProBuddyTransactions() {
     }
 
-    public ProBuddyTransactions(Integer senderAccID, Integer receiverAccID, Integer receiverUserID, Integer senderUserID,
-                                String senderName, Double amount, Integer id, Integer fee, Timestamp date) {
+    public ProBuddyTransactions(int senderAccID, int receiverAccID, int receiverUserID, int senderUserID,
+                                String senderName, Double amount, int id, int fee, Timestamp date) {
         this.senderAccID = senderAccID;
         this.receiverAccID = receiverAccID;
         this.receiverUserID = receiverUserID;
@@ -53,35 +59,35 @@ public class ProBuddyTransactions {
                 '}';
     }
 
-    public Integer getSenderAccID() {
+    public int getSenderAccID() {
         return senderAccID;
     }
 
-    public void setSenderAccID(Integer senderAccID) {
+    public void setSenderAccID(int senderAccID) {
         this.senderAccID = senderAccID;
     }
 
-    public Integer getReceiverAccID() {
+    public int getReceiverAccID() {
         return receiverAccID;
     }
 
-    public void setReceiverAccID(Integer receiverAccID) {
+    public void setReceiverAccID(int receiverAccID) {
         this.receiverAccID = receiverAccID;
     }
 
-    public Integer getReceiverUserID() {
+    public int getReceiverUserID() {
         return receiverUserID;
     }
 
-    public void setReceiverUserID(Integer receiverUserID) {
+    public void setReceiverUserID(int receiverUserID) {
         this.receiverUserID = receiverUserID;
     }
 
-    public Integer getSenderUserID() {
+    public int getSenderUserID() {
         return senderUserID;
     }
 
-    public void setSenderUserID(Integer senderUserID) {
+    public void setSenderUserID(int senderUserID) {
         this.senderUserID = senderUserID;
     }
 
@@ -101,19 +107,19 @@ public class ProBuddyTransactions {
         this.amount = amount;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getFee() {
+    public int getFee() {
         return fee;
     }
 
-    public void setFee(Integer fee) {
+    public void setFee(int fee) {
         this.fee = fee;
     }
 

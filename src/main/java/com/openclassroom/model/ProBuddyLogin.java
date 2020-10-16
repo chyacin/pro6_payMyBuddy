@@ -1,11 +1,11 @@
 package com.openclassroom.model;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
+
 import java.sql.Timestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class ProBuddyLogin {
@@ -13,8 +13,15 @@ public class ProBuddyLogin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ManyToOne
+    @JoinColumn(name ="fk_login_user_id")
     private Integer userID;
+
+    @Column(name = "created_on", nullable = false, updatable = false)
+    @CreationTimestamp
     private Timestamp date;
+
+    @Type(type = "boolean")
     private Boolean success;
 
     protected ProBuddyLogin() {

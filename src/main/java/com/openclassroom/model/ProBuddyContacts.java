@@ -1,24 +1,25 @@
 package com.openclassroom.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class ProBuddyContacts {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_first_user_id")
     private String firstUserId;
+
+    @Column(name ="fk_second_user_id")
     private String secondUserId;
 
     protected ProBuddyContacts() {
     }
 
-    public ProBuddyContacts(Integer id, String firstUserId, String secondUserId){
+    public ProBuddyContacts(int id, String firstUserId, String secondUserId){
         this.id = id;
         this.firstUserId = firstUserId;
         this.secondUserId = secondUserId;
@@ -33,11 +34,11 @@ public class ProBuddyContacts {
                 '}';
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
