@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AccountRepository extends JpaRepository<ProBuddyAccount, Integer> {
+
+    ProBuddyAccount findAccountByUserEmail(String email);
 }

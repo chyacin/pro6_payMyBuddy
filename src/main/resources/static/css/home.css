@@ -1,0 +1,35 @@
+#breadcrumb {
+    background-color: #f2f2f2;
+}
+
+.mainContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+}
+
+.navbar {
+    background-color: #white;
+}
+
+.#pageLocationTitle{
+     font-size: 22px;
+     color: #0066ff;
+     padding: 30px;
+     margin: auto;
+ }
+
+ .topContainer {
+     background-color: #white;
+ }
+
+ .helloText {
+     text-align: center;
+     bottom-margin: 20px;
+ }
+
+ #homepageImage{
+     display: block;
+     margin-left: auto;
+     margin-right: auto;
+ }

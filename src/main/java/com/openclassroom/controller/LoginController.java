@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.security.RolesAllowed;
 
@@ -15,29 +16,27 @@ public class LoginController {
 	@Autowired
 	private RoleService roleService;
 
-
-
 	@GetMapping(value = "/")
 	@RolesAllowed("USER")
 	public String getUser() {
-		return "landingPage";
+		return "home";
 	}
 
 	@GetMapping(value = "/admin")
 	@RolesAllowed("ADMIN")
 	public String getAdmin() {
-		return "landingPage";
+		return "home";
 	}
 
 	// Login form
 	@GetMapping("/login")
-	public String login() {
-		return "login";
+	public ModelAndView login(ModelAndView modelAndView) {
+    modelAndView.setViewName("login");
+		return modelAndView;
 	}
 	// Login form with error
 	@RequestMapping("/login-error")
 	public String loginError(Model model) {
-		System.out.println("In login error page");
 		model.addAttribute("loginError", true);
 		return "login";
 	}

@@ -9,7 +9,7 @@ public class ProBuddyUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int user_id;
+    private int id;
 
     private String firstName;
     private String lastName;
@@ -20,19 +20,22 @@ public class ProBuddyUser {
     private String nationalID;
     private String password;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private int accountNo;
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
+    private ProBuddyAccount account;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable( name = "pro_user_role" , joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private Set<ProBuddyRole> proBuddyRole;
+    @JoinTable(
+            name = "pro_user_role" ,
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    )
+    private Set<ProBuddyRole> role;
 
-    protected ProBuddyUser() {
+    public ProBuddyUser() {
     }
-
 
     public ProBuddyUser(String firstName, String lastName, String address, String email, int age,
-                        String phone, String nationalID, String password, int accountNo, Set<ProBuddyRole> proBuddyRole) {
+                        String phone, String nationalID, String password, Set<ProBuddyRole> role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -41,29 +44,15 @@ public class ProBuddyUser {
         this.phone = phone;
         this.nationalID = nationalID;
         this.password = password;
-        this.accountNo = accountNo;
-        this.proBuddyRole = proBuddyRole;
+        this.account = null;
+        this.role = role;
     }
 
-    public ProBuddyUser(String firstName, String lastName, String address,
-                        String email, Integer age, String phone, String nationalID,
-                        Integer id, String password, int accountNo, Set<ProBuddyRole> proBuddyRole) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.email = email;
-        this.age = age;
-        this.phone = phone;
-        this.nationalID = nationalID;
-        this.user_id = id;
-        this.password = password;
-        this.accountNo = accountNo;
-        this.proBuddyRole = proBuddyRole;
-    }
+
 
     @Override
     public String toString() {
-        return "User{" +
+        return "ProBuddyUser{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +
@@ -71,11 +60,19 @@ public class ProBuddyUser {
                 ", age=" + age +
                 ", phone='" + phone + '\'' +
                 ", nationalID='" + nationalID + '\'' +
-                ", id=" + user_id +
                 ", password='" + password + '\'' +
-                ", accountNo='" + accountNo + '\'' +
-                ", roles='" + proBuddyRole + '\'' +
+                ", accountNo=" + account.getId() +
+                ", roles=" + role +
                 '}';
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -110,11 +107,11 @@ public class ProBuddyUser {
         this.email = email;
     }
 
-    public Integer getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
@@ -130,16 +127,8 @@ public class ProBuddyUser {
         return nationalID;
     }
 
-    public void setNationalID(String nationalIdNo) {
-        this.nationalID = nationalIdNo;
-    }
-
-    public Integer getId() {
-        return user_id;
-    }
-
-    public void setId(Integer id) {
-        this.user_id = id;
+    public void setNationalID(String nationalID) {
+        this.nationalID = nationalID;
     }
 
     public String getPassword() {
@@ -150,16 +139,20 @@ public class ProBuddyUser {
         this.password = password;
     }
 
-    public int getAccountNo() {
-        return accountNo;
+    public ProBuddyAccount getAccount() {
+        return account;
     }
 
-    public void setAccountNo(int accountNo) {
-        this.accountNo = accountNo;
+    public void setAccount(ProBuddyAccount account) {
+        this.account = account;
     }
 
-    public Set<ProBuddyRole> getRoles() {return proBuddyRole;}
+    public Set<ProBuddyRole> getRoles() {
+        return role;
+    }
 
-    public void setRoles(Set<ProBuddyRole
-            > proBuddyRoles) {this.proBuddyRole = proBuddyRole;}
+    public void setRoles(Set<ProBuddyRole> role) {
+        this.role = role;
+    }
+
 }

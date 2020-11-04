@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Set;
 
 
+
 @Entity
 public class ProBuddyRole {
     @Id
@@ -13,14 +14,7 @@ public class ProBuddyRole {
 
     private String name;
 
-    @ManyToMany(mappedBy = "proBuddyRole")
-  //  @ManyToMany(targetEntity= ProBuddyUser.class)
-    //@OneToMany (mappedBy = "proBuddyRole", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<ProBuddyUser> proBuddyUsers;
-
-    public ProBuddyRole(){
-
-    }
+    public ProBuddyRole(){ }
 
     public ProBuddyRole(String name) {
         this.name = name;
@@ -31,7 +25,6 @@ public class ProBuddyRole {
         return "Role{" +
                 "id=" + role_id +
                 ", name='" + name + '\'' +
-                ", users=" + proBuddyUsers +
                 '}';
     }
 
@@ -50,14 +43,4 @@ public class ProBuddyRole {
     public void setName(String name) {
         this.name = name;
     }
-
-    public Set<ProBuddyUser> getProBuddyUsers(){
-        return proBuddyUsers;
-    }
-
-    public void setProBuddyUsers(Set<ProBuddyUser> proBuddyUsers) {
-        this.proBuddyUsers = proBuddyUsers;
-    }
-
-
 }

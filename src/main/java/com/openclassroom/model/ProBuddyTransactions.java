@@ -11,100 +11,54 @@ public class ProBuddyTransactions {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name ="fk_sender_acc_id")
-    private int senderAccID;
+    @JoinColumn(name = "sender_account_id")
+    private ProBuddyAccount senderAccount;
     @ManyToOne
-    @JoinColumn(name ="fk_receiver_acc_id")
-    private int receiverAccID;
+    @JoinColumn(name = "receiver_account_id")
+    private ProBuddyAccount receiverAccount;
     @ManyToOne
-    @JoinColumn(name ="fk_receiver_user_id")
-    private int receiverUserID;
+    @JoinColumn(name = "receiver_user_id")
+    private ProBuddyUser receiver;
     @ManyToOne
-    @JoinColumn(name ="fk_sender_user_id")
-    private int senderUserID;
+    @JoinColumn(name = "sender_user_id")
+    private ProBuddyUser sender;
 
-    private String senderName;
-    private Double amount;
-    private int fee;
+    private String description;
+    private double amount;
+    private double fee;
     private Timestamp date;
 
-    protected ProBuddyTransactions() {
+    public ProBuddyTransactions() {
     }
 
-    public ProBuddyTransactions(int senderAccID, int receiverAccID, int receiverUserID, int senderUserID,
-                                String senderName, Double amount, int id, int fee, Timestamp date) {
-        this.senderAccID = senderAccID;
-        this.receiverAccID = receiverAccID;
-        this.receiverUserID = receiverUserID;
-        this.senderUserID = senderUserID;
-        this.senderName = senderName;
+    public ProBuddyTransactions(ProBuddyAccount senderAccount, ProBuddyAccount receiverAccount, ProBuddyUser receiver,
+                                ProBuddyUser sender, String description, double amount, double fee, Timestamp date) {
+
+        this.senderAccount = senderAccount;
+        this.receiverAccount = receiverAccount;
+        this.receiver = receiver;
+        this.sender = sender;
+        this.description = description;
         this.amount = amount;
-        this.id = id;
         this.fee = fee;
         this.date = date;
     }
 
+
+
     @Override
     public String toString() {
-        return "Transactions{" +
-                "senderAccID=" + senderAccID +
-                ", receiverAccID=" + receiverAccID +
-                ", receiverUserID=" + receiverUserID +
-                ", senderUserID=" + senderUserID +
-                ", senderName='" + senderName + '\'' +
+        return "ProBuddyTransactions{" +
+                "id=" + id +
+                ", senderAccount=" + senderAccount +
+                ", receiverAccount=" + receiverAccount +
+                ", receiver=" + receiver +
+                ", sender=" + sender +
+                ", description='" + description + '\'' +
                 ", amount=" + amount +
-                ", id=" + id +
                 ", fee=" + fee +
                 ", date=" + date +
                 '}';
-    }
-
-    public int getSenderAccID() {
-        return senderAccID;
-    }
-
-    public void setSenderAccID(int senderAccID) {
-        this.senderAccID = senderAccID;
-    }
-
-    public int getReceiverAccID() {
-        return receiverAccID;
-    }
-
-    public void setReceiverAccID(int receiverAccID) {
-        this.receiverAccID = receiverAccID;
-    }
-
-    public int getReceiverUserID() {
-        return receiverUserID;
-    }
-
-    public void setReceiverUserID(int receiverUserID) {
-        this.receiverUserID = receiverUserID;
-    }
-
-    public int getSenderUserID() {
-        return senderUserID;
-    }
-
-    public void setSenderUserID(int senderUserID) {
-        this.senderUserID = senderUserID;
-    }
-
-    public String getSenderName() {
-        return senderName;
-    }
-
-    public void setSenderName(String senderName) {
-        this.senderName = senderName;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
     }
 
     public int getId() {
@@ -115,11 +69,59 @@ public class ProBuddyTransactions {
         this.id = id;
     }
 
-    public int getFee() {
+    public ProBuddyAccount getSenderAccount() {
+        return senderAccount;
+    }
+
+    public void setSenderAccount(ProBuddyAccount senderAccount) {
+        this.senderAccount = senderAccount;
+    }
+
+    public ProBuddyAccount getReceiverAccount() {
+        return receiverAccount;
+    }
+
+    public void setReceiverAccount(ProBuddyAccount receiverAccount) {
+        this.receiverAccount = receiverAccount;
+    }
+
+    public ProBuddyUser getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(ProBuddyUser receiver) {
+        this.receiver = receiver;
+    }
+
+    public ProBuddyUser getSender() {
+        return sender;
+    }
+
+    public void setSender(ProBuddyUser sender) {
+        this.sender = sender;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public double getFee() {
         return fee;
     }
 
-    public void setFee(int fee) {
+    public void setFee(double fee) {
         this.fee = fee;
     }
 

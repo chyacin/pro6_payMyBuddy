@@ -1,0 +1,174 @@
+{
+     box-sizing: border-box;
+   }
+   body {
+     margin: 0;
+     font-family: Arial, Helvetica, sans-serif;
+     width: 960px;
+     border: 1px solid #000;
+     margin: auto;
+   }
+
+   .container {
+     font-family: Arial;
+     width: 800px;
+     padding: 20px;
+   }
+
+   .custom {
+       height: calc(100vh - 60px);
+     }
+
+     .setmargintop {
+       margin-top: 2rem;
+     }
+
+     .setdoublemargintop{
+       margin-top: 4rem;
+     }
+
+     .navbar {
+       padding-top: 0;
+       padding-bottom: 0;
+   }
+
+     .setmarginbottom {
+       margin-bottom: 2rem;
+     }
+
+   .navbar-height {
+     height: 2.25rem;
+   }
+
+   .navbar-center {
+       display: inline-block;
+        padding-top: 0.3125rem;
+        padding-bottom: 0.3125rem;
+        margin-right: 1rem;
+        font-size: 1.25rem;
+        line-height: inherit;
+        white-space: nowrap;
+       color: #fff;
+       position: absolute;
+       left: 50%;
+       transform: translatex(-50%);
+   }
+
+   .select-connection {
+       padding-top: 100px;
+       padding-bottom: 100px;
+       height: 300px;
+   }
+
+   .item {
+     margin:1.5%;
+     width:30.3333%;
+     padding-bottom:10%;  /* to simulate height on the empty items */
+     background:grey;
+     border: 1px solid #000;
+     float:left;
+     height: 120px;
+
+     /* following only if you want to add borders to the items */
+     box-sizing:border-box;
+ }
+
+   /* Style the input container */
+   .input-container {
+     display: flex;
+     width: 100%;
+     margin-bottom: 15px;
+   }
+
+   /* Style the form icons */
+   .icon {
+     padding: 10px;
+     background: white;
+     color: black;
+     min-width: 50px;
+     text-align: center;
+   }
+
+   /* Style the input fields */
+   .input-field {
+     width: 100%;
+     padding: 10px;
+     outline: none;
+   }
+
+   .input-field:focus {
+     border: 2px solid dodgerblue;
+   }
+
+
+   .left-inner-addon {
+     position: relative;
+   }
+   .left-inner-addon input {
+     padding-left: 30px;
+   }
+   .left-inner-addon i {
+     position: absolute;
+     padding: 10px 12px;
+     pointer-events: none;
+   }
+
+   .fa-envelope{
+     color: grey;
+   }
+
+   .fa-asterisk {
+     color: grey;
+
+   }
+
+   .fa-circle {
+     color: grey;
+   }
+
+   .brand-sizing {
+     margin-bottom: 5px;
+   }
+
+   .input-group{
+     border: 1px gray solid;
+     padding: 10px;
+   }
+
+   .boxItem {
+     padding-bottom: 30px;
+     padding-top: 20px;
+   }
+
+   .boxItemFirst {
+     padding-left: 50px;
+   }
+
+   .boxItemLast {
+     padding-left: 5px;
+     padding-right: 5px;
+   }
+
+   .boxItemLast {
+     padding-right: 50px;
+     padding-left: 0px;
+   }
+
+   .btn-xl {
+     padding: 5px 70px;
+     border-radius: 5px;
+   }
+
+   .tableItem {
+     padding-bottom: 20px;
+   }
+
+   .right {
+     position: absolute;
+     right: 0px;
+   }
+
+   thead {
+         background-color: rgb(42, 138, 42);
+         color: white;
+   }

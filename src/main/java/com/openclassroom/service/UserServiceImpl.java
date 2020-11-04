@@ -1,5 +1,6 @@
 package com.openclassroom.service;
 
+import com.openclassroom.model.ProBuddyAccount;
 import com.openclassroom.model.ProBuddyRole;
 import com.openclassroom.model.ProBuddyUser;
 import com.openclassroom.repositories.RoleRepository;
@@ -15,10 +16,10 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
     private RoleRepository roleRepository;
-    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private AccountService accountService;
+    private RoleService roleService;
 
     @Override
     public void save(ProBuddyUser proBuddyUser) {
@@ -28,14 +29,54 @@ public class UserServiceImpl implements UserService{
         if (role.get() != null) {
             Set<ProBuddyRole> proBuddyRoleList = new HashSet<>();
             proBuddyRoleList.add(role.get());
-            proBuddyUser.setRoles(proBuddyRoleList);
+            proBuddyUser.setRoles (proBuddyRoleList);
         }
 
         userRepository.save(proBuddyUser);
     }
 
     @Override
-    public ProBuddyUser findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public ProBuddyUser findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
+
+    @Override
+    public ProBuddyUser findUserById(int id) {
+        Optional<ProBuddyUser> proBuddyUserOptional = userRepository.findById(id);
+        if(proBuddyUserOptional.isPresent()) {
+            ProBuddyUser user = proBuddyUserOptional.get();
+            return user;
+        }
+        return null;
+    }
+
+    @Override
+    public ProBuddyUser createNewUserByRegistration(ProBuddyUser proBuddyUser) {
+
+        ProBuddyAccount account = new ProBuddyAccount();
+        account.setUser(proBuddyUser);
+        account.setBalance(0.0);
+        accountService.createAccount(account);
+
+        Set<ProBuddyRole> role =  new HashSet<>();
+        ProBuddyRole proBuddyRole = roleService.getRoleByName("User");
+        role.add(proBuddyRole);
+
+
+        ProBuddyUser newUser = new ProBuddyUser();
+        newUser.setFirstName(proBuddyUser.getFirstName());
+        newUser.setLastName(proBuddyUser.getLastName());
+        newUser.setAddress(proBuddyUser.getAddress());
+        newUser.setEmail(proBuddyUser.getEmail());
+        newUser.setAge(proBuddyUser.getAge());
+        newUser.setPhone(proBuddyUser.getPhone());
+        newUser.setNationalID(proBuddyUser.getNationalID());
+        newUser.setAccount(account);
+        newUser.setPassword(proBuddyUser.getPassword());
+        newUser.setRoles(role);
+
+        return userRepository.save(newUser);
+    }
+
+
 }

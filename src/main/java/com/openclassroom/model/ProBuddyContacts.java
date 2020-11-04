@@ -1,6 +1,7 @@
 package com.openclassroom.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class ProBuddyContacts {
@@ -9,28 +10,36 @@ public class ProBuddyContacts {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_first_user_id")
-    private String firstUserId;
 
-    @Column(name ="fk_second_user_id")
-    private String secondUserId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(referencedColumnName = "id")
+    private ProBuddyUser firstUser;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(referencedColumnName = "id")
+    private ProBuddyUser secondUser;
 
     protected ProBuddyContacts() {
     }
 
-    public ProBuddyContacts(int id, String firstUserId, String secondUserId){
+    public ProBuddyContacts(int id, ProBuddyUser firstUser, ProBuddyUser secondUser) {
         this.id = id;
-        this.firstUserId = firstUserId;
-        this.secondUserId = secondUserId;
+        this.firstUser = firstUser;
+        this.secondUser = secondUser;
     }
+
+    public ProBuddyContacts(ProBuddyUser firstUser, ProBuddyUser secondUser) {
+        this.firstUser = firstUser;
+        this.secondUser = secondUser;
+    }
+
 
     @Override
     public String toString() {
-        return "Contacts{" +
+        return "ProBuddyContacts{" +
                 "id=" + id +
-                ", firstUserId='" + firstUserId + '\'' +
-                ", secondUserId='" + secondUserId + '\'' +
+                ", firstUser=" + firstUser +
+                ", secondUser=" + secondUser +
                 '}';
     }
 
@@ -42,19 +51,33 @@ public class ProBuddyContacts {
         this.id = id;
     }
 
-    public String getFirstUserId() {
-        return firstUserId;
+    public ProBuddyUser getFirstUser() {
+        return firstUser;
     }
 
-    public void setFirstUserId(String firstUserId) {
-        this.firstUserId = firstUserId;
+    public void setFirstUser(ProBuddyUser firstUser) {
+        this.firstUser = firstUser;
     }
 
-    public String getSecondUserId() {
-        return secondUserId;
+    public ProBuddyUser getSecondUser() {
+        return secondUser;
     }
 
-    public void setSecondUserId(String secondUserId) {
-        this.secondUserId = secondUserId;
+    public void setSecondUser(ProBuddyUser secondUser) {
+        this.secondUser = secondUser;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProBuddyContacts that = (ProBuddyContacts) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

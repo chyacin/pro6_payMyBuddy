@@ -13,9 +13,10 @@ public class ProBuddyLogin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+
     @ManyToOne
-    @JoinColumn(name ="fk_login_user_id")
-    private Integer userID;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private ProBuddyUser user;
 
     @Column(name = "created_on", nullable = false, updatable = false)
     @CreationTimestamp
@@ -27,18 +28,18 @@ public class ProBuddyLogin {
     protected ProBuddyLogin() {
     }
 
-    public ProBuddyLogin(Integer id, Integer userID, Timestamp date, Boolean success){
+    public ProBuddyLogin(Integer id, ProBuddyUser user, Timestamp date, Boolean success) {
         this.id = id;
-        this.userID = userID;
+        this.user = user;
         this.date = date;
         this.success = success;
     }
 
     @Override
     public String toString() {
-        return "Login{" +
+        return "ProBuddyLogin{" +
                 "id=" + id +
-                ", userID=" + userID +
+                ", user=" + user +
                 ", date=" + date +
                 ", success=" + success +
                 '}';
@@ -52,12 +53,12 @@ public class ProBuddyLogin {
         this.id = id;
     }
 
-    public Integer getUserID() {
-        return userID;
+    public ProBuddyUser getUser() {
+        return user;
     }
 
-    public void setUserID(Integer userID) {
-        this.userID = userID;
+    public void setUser(ProBuddyUser user) {
+        this.user = user;
     }
 
     public Timestamp getDate() {

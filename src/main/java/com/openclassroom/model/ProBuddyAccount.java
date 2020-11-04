@@ -10,34 +10,29 @@ public class ProBuddyAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private ProBuddyUser user;
+
     private String bankName;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_user_id")
-    private int userID;
-
+    private String bankAccountNumber;
     private double balance;
 
-    public ProBuddyAccount() {
+    public int getId() {
+        return id;
     }
 
-    public ProBuddyAccount(String bankName, int userID, int id, Double balance){
-        this.bankName = bankName;
-        this.userID = userID;
+    public void setId(int id) {
         this.id = id;
-        this.balance = balance;
     }
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "bankName='" + bankName + '\'' +
-                ", userID=" + userID +
-                ", id=" + id +
-                ", balance=" + balance +
-                '}';
+    public ProBuddyUser getUser() {
+        return user;
     }
 
+    public void setUser(ProBuddyUser user) {
+        this.user = user;
+    }
 
     public String getBankName() {
         return bankName;
@@ -47,28 +42,30 @@ public class ProBuddyAccount {
         this.bankName = bankName;
     }
 
-    public int getUserID() {
-        return userID;
+    public String getBankAccountNumber() {
+        return bankAccountNumber;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public void setBankAccountNumber(String bankAccountNumber) {
+        this.bankAccountNumber = bankAccountNumber;
     }
 
     public double getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
+    @Override
+    public String toString() {
+        return "ProBuddyAccount{" +
+                "id=" + id +
+                ", user=" + user +
+                ", bankName='" + bankName + '\'' +
+                ", bankAccountNumber='" + bankAccountNumber + '\'' +
+                ", balance=" + balance +
+                '}';
+    }
 }
