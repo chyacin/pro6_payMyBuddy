@@ -79,13 +79,11 @@
                             th:value="${userEmail.email}"
                             th:text="${userEmail.email}">
                     </option>
-                    <option value="jd@pmb.com">jd@pmb.com</option>
-                    <option value="josm@pb.com">josm@pb.com</option>
                 </select>
             </div>
             <div class="col-sm-3 boxItem">
                 <input class="form-control" placeholder="The amount" th:field="*{amount}">
-                <input class="form-control"  placeholder="Purpose for the transfer" th:field="*{description}">
+                <input class="form-control"  placeholder="Description" th:field="*{description}">
             </div>
             <div class="col-sm-5 text-right boxItem boxItemLast">
                 <button type="submit" class="btn btn-success btn-xl">Pay</button>
@@ -107,7 +105,7 @@
             </thead>
             <tbody>
             <tr th:each="dto : ${dtoList}">
-                <td th:text="${dto.receivingUserID}">Example1</td>
+                <td th:text="${dto.userName}">Example1</td>
                 <td th:text="${dto.description}">Example2</td>
                 <td th:text="${'$' + dto.amount}">$12.00</td>
             </tr>

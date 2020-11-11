@@ -60,7 +60,7 @@ public class TransactionController {
             for (ProBuddyTransactions proBuddytransactions : transactionsList) {
                 ProBuddyTransactionDTO dto = new ProBuddyTransactionDTO();
                 dto.setSendingUserID(proBuddytransactions.getSender().getId());
-                dto.setReceivingUserID(proBuddytransactions.getReceiver().getId());
+                dto.setUserName(proBuddytransactions.getReceiver().getFirstName());
                 dto.setDescription(proBuddytransactions.getDescription());
                 dto.setAmount(proBuddytransactions.getAmount());
                 dto.setFee(proBuddytransactions.getFee());

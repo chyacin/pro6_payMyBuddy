@@ -5,6 +5,7 @@ public class ProBuddyTransactionDTO {
 
     private int sendingUserID;
     private int receivingUserID;
+    private String userName;
     private double amount;
     private double fee;
     private String description;
@@ -24,6 +25,15 @@ public class ProBuddyTransactionDTO {
         this.amount = amount;
         this.fee = fee;
         this.description = description;
+
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public int getSendingUserID() {

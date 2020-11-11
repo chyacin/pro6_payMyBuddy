@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -74,11 +75,12 @@ public class UserController {
     }
 
     @PostMapping("/user/addUserConnection")
-    public ModelAndView createAddUserConnection (@AuthenticationPrincipal  @ModelAttribute("user") ProBuddyUserDetails user,
-                                            String connectedUserEmail, ModelAndView modelAndView,
-                                            RedirectView redirectView, BindingResult result){
+    public ModelAndView createAddUserConnection (@AuthenticationPrincipal  ProBuddyUserDetails user,
+                                                 @RequestParam String connectedUserEmail, ModelAndView modelAndView,
+                                                 RedirectView redirectView, BindingResult result){
 
         String loggedInName = user.getUsername();
+
         //Get the ProBuddyUser object of the person logged in
 
         ProBuddyUser loggedInUser = userService.findUserByEmail(loggedInName);

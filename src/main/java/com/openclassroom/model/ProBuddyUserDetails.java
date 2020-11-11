@@ -25,7 +25,7 @@ public class ProBuddyUserDetails extends User implements UserDetails {
         this.user =  user;
         this.password = password;
         this.authorities = (Set<GrantedAuthority>) authorities;
-        //this.authorities = Arrays.asList(new SimpleGrantedAuthority(proBuddyRole.getName()));
+
     }
 
 

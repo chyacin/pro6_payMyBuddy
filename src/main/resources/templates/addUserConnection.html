@@ -67,11 +67,11 @@
 
 
     </div>
-    <form th:action="@{/user/addUserConnection}" th:object="${user}" method="post">
+    <form th:action="@{/user/addUserConnection}"  method="post">
         <div class="row border" style="margin-bottom: 30px;">
 
             <div class="col-sm-3 boxItem">
-                <input class="form-control" placeholder="find your buddy" th:field="*{email}">
+                <input class="form-control" placeholder="find your buddy" name="connectedUserEmail">
             </div>
             <div class="col-sm-5 text-right boxItem boxItemLast">
                 <button type="submit" class="btn btn-success btn-xl">Buddy Connection</button>

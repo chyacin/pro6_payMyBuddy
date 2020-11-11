@@ -34,8 +34,8 @@ public class ContactsServiceImpl implements  ContactsService{
 
     @Override
     public List<ProBuddyUser> findConnectedUserByConnectorUser(ProBuddyUser connectorUser) {
-        if(connectorUser == null) System.out.println("COnnected user is null");
-        if(userService == null) System.out.println("User service is null");
+        if(connectorUser == null);
+        if(userService == null);
            List<ProBuddyUser> connectedUserList = new ArrayList<>();
         if (userService.findUserById(connectorUser.getId()) != null) {
             for(ProBuddyContacts contacts: contactsRepository.findAllById(connectorUser.getId())){
