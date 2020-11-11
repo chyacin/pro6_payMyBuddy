@@ -19,6 +19,7 @@ public class ProBuddyUser {
     private String phone;
     private String nationalID;
     private String password;
+    private boolean isEnabled;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     private ProBuddyAccount account;
@@ -155,4 +156,11 @@ public class ProBuddyUser {
         this.role = role;
     }
 
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
 }

@@ -46,18 +46,21 @@
 <nav class="navbar navbar-light bg-light navbar-height">
     <ul class="nav"><!-- left-->
         <li class="nav-item">
-            <a class="nav-link" href="#">Home!</a>
+            <a class="nav-link" href="/user/home">Home</a>
         </li>
-      <!--  <li class="nav-item">
-            <a class="nav-link" href="#">!</a>
-        </li> -->
+          <li class="nav-item">
+              <a class="nav-link" href="#"> |</a>
+          </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#"> Add Connection</a>
+        </li>
     </ul>
 </nav>
 <div class="container">
     <div class="helloText">
         <h2 class="text-center">Hello, <span th:text="${#request.remoteUser}"></span>!</h2>
     </div>
-    <img id="homepageImage" src="../static/images/homePage2.png" th:src="@{/images/homePage2.png}">
+
 </div>
 </body>
 </html>

@@ -1,8 +1,10 @@
 package com.openclassroom.controller;
 
 import com.openclassroom.model.ProBuddyUser;
+import com.openclassroom.model.ProBuddyUserDetails;
 import com.openclassroom.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -14,12 +16,12 @@ public class HomeController {
 
     @Autowired
     private UserService userService;
+
     private ProBuddyUser proBuddyUser;
 
 
     @GetMapping("/user/home")
-    public ModelAndView home(ModelAndView modelAndView) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ModelAndView home(@AuthenticationPrincipal ProBuddyUserDetails user, ModelAndView modelAndView) {
         String loggedInName = user.getUsername(); //get logged in username
         ProBuddyUser loggedInUser = userService.findUserByEmail(loggedInName);
         if (loggedInUser != null) {
@@ -33,16 +35,8 @@ public class HomeController {
     }
 
     @GetMapping("/user/contact")
-    public ModelAndView contact(ModelAndView modelAndView) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String loggedInName = user.getUsername(); //get logged in username
-        ProBuddyUser loggedInUser = userService.findUserByEmail(loggedInName);
-        if (loggedInUser != null) {
-            modelAndView.setViewName("contact");
-        }
-        else {
-            modelAndView.setViewName("redirect:/login");
-        }
+    public ModelAndView contact( ModelAndView modelAndView) {
+        modelAndView.setViewName("contact");
         return modelAndView;
     }
 }

@@ -2,9 +2,11 @@ package com.openclassroom.controller;
 
 import com.openclassroom.model.ProBuddyContacts;
 import com.openclassroom.model.ProBuddyUser;
+import com.openclassroom.model.ProBuddyUserDetails;
 import com.openclassroom.service.ContactsService;
 import com.openclassroom.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     private ProBuddyContacts proBuddyContacts;
+    @Autowired
     private ContactsService contactsService;
 
     @GetMapping("/register")
@@ -54,12 +57,10 @@ public class UserController {
 
 
     @PostMapping("/user/addConnection")
-    public ModelAndView createAddConnection(@ModelAttribute("user") String connectedUserEmail,
-                                            ModelAndView modelAndView, RedirectView redirectView,
-                                            BindingResult result){
+    public ModelAndView createAddConnection(@ModelAttribute("user") @AuthenticationPrincipal ProBuddyUserDetails user,
+                                            String connectedUserEmail, ModelAndView modelAndView,
+                                            RedirectView redirectView, BindingResult result){
 
-
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String loggedInName = user.getUsername();
         //Get the ProBuddyUser object of the person logged in
 

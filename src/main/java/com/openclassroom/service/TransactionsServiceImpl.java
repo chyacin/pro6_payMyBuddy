@@ -45,17 +45,17 @@ public class TransactionsServiceImpl implements TransactionsService {
         ProBuddyAccount receiverAccount = accountRepository.findAccountByUserEmail(receiver.getEmail());
 
         double fee = amount * transactionFee;
-        double totalCharge = amount + fee;
+        double totalCharge = amount - fee;
 
         //message if you have insufficient funds so that you cannot transfer
-        if(senderAccount.getBalance() < totalCharge){
+        if(senderAccount.getBalance() < amount){
             throw new InsufficientBalanceException("Not enough money to fund the transfer of " + amount);
         }
 
         // debit the sender account of the amount + fee
-        senderAccount.setBalance(senderAccount.getBalance() - totalCharge);
+        senderAccount.setBalance(senderAccount.getBalance() - amount);
         // credit the receiver account with the amount
-        receiverAccount.setBalance(receiverAccount.getBalance() + amount);
+        receiverAccount.setBalance(receiverAccount.getBalance() + totalCharge);
 
         // update both sender and receiver accounts
         accountService.updateAccount(senderAccount);
