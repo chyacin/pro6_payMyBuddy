@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8" />
-    <title> Home </title>
+    <title> Add User Connection </title>
     <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/transaction.css}">
     <script type="text/javascript" th:href="@{/js/jquery-3.5.1.min.js}"></script>
     <script type="text/javascript" th:href="@{/js/popper.min.js}"></script>
     <script type="text/javascript" th:href="@{/js/bootstrap/bootstrap.min.js}"></script>
+
 </head>
 <body>
 <header>
@@ -30,7 +31,7 @@
             <a class="nav-link" href="/user/home">Home</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/user/makeTransfer">Transfer</a>
+            <a class="nav-link" href="/user/transfer">Transfer</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/user/profile">Profile</a>
@@ -48,19 +49,51 @@
         <li class="nav-item">
             <a class="nav-link" href="/user/home">Home</a>
         </li>
-          <li class="nav-item">
-              <a class="nav-link" href="#"> |</a>
-          </li>
         <li class="nav-item">
-            <a class="nav-link" href="#"> Add Connection</a>
+            <a class="nav-link" href="#">/</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#">Transfer</a>
         </li>
     </ul>
 </nav>
+
 <div class="container">
-    <div class="helloText">
-        <h2 class="text-center">Hello, <span th:text="${#request.remoteUser}"></span>!</h2>
+
+    <label th:text="${message}"/>
+    <div class="row">
+
+        <p class="col-sm-8">Add your buddy</p>
+
+
+    </div>
+    <form th:action="@{/user/addUserConnection}" th:object="${user}" method="post">
+        <div class="row border" style="margin-bottom: 30px;">
+
+            <div class="col-sm-3 boxItem">
+                <input class="form-control" placeholder="find your buddy" th:field="*{email}">
+            </div>
+            <div class="col-sm-5 text-right boxItem boxItemLast">
+                <button type="submit" class="btn btn-success btn-xl">Buddy Connection</button>
+            </div>
+            <!--</form>-->
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+
+        </div>
+        <div class="col-sm-4"></div>
+
     </div>
 
+
+            </div>
+        </div>
+    </div>
 </div>
+
 </body>
 </html>

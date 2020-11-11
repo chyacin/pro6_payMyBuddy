@@ -4,13 +4,15 @@ public class ProBuddyTransferFormDTO {
 
     String connectedUserEmail;
     double amount;
+    String description;
 
     public ProBuddyTransferFormDTO() {
     }
 
-    public ProBuddyTransferFormDTO(String connectedUserEmail, double amount) {
+    public ProBuddyTransferFormDTO(String connectedUserEmail, double amount, String description) {
         this.connectedUserEmail = connectedUserEmail;
         this.amount = amount;
+        this.description = description;
     }
 
     public String getConnectedUserEmail() {
@@ -27,5 +29,13 @@ public class ProBuddyTransferFormDTO {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -49,8 +49,6 @@ public class TransactionController {
                                      ModelAndView modelAndView) {
 
 
-        //ProBuddyUser connectedBuddy = userService.findUserByEmail(transferFormDTO.getConnectedUserEmail());
-
         String loggedInName = user.getUsername(); //get logged in username
 
         ProBuddyUser loggedInUser = userService.findUserByEmail(loggedInName);
@@ -106,10 +104,12 @@ public class TransactionController {
         if (loggedInUser != null) {
             try {
                 transactionsService.createTransactionByTransferMoney(loggedInUser.getId(), connectedBuddy.getId(),
-                        transferFormDTO.getAmount(), "Transfer to " + connectedBuddy.getEmail());
+                        transferFormDTO.getAmount(), transferFormDTO.getDescription());
+
                 modelAndView.addObject("message", "Transaction successful");
                 System.out.println("Transaction successful");
-            } catch (InsufficientBalanceException e) {
+            }
+            catch (InsufficientBalanceException e) {
                 modelAndView.addObject("message", "Insufficient balance");
                 System.out.println("Insufficient balance");
                 e.printStackTrace();
@@ -137,7 +137,6 @@ public class TransactionController {
             List<ProBuddyUser> connectedUserList = contactsService.findConnectedUserByConnectorUser(connectedBuddy);
 
             modelAndView.setViewName("transaction");
-          //  modelAndView.addObject("transferForm", new ProBuddyTransactions());
             modelAndView.addObject("connectedUserList", connectedUserList);
         }
         else{

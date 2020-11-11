@@ -65,7 +65,8 @@
 
         <p class="col-sm-8">Send money</p>
 
-        <a href="/user/addConnection" th:href="@{/user/addConnection}" class="btn btn-primary col-sm-4">Add connection</a>
+
+       <a href="/user/addUserConnection" th:href="@{/user/addUserConnection}" class="btn btn-primary col-sm-4">Add connection</a>
 
     </div>
     <form th:action="@{/user/makeTransfer}" th:object="${transferForm}" method="post">
@@ -75,19 +76,19 @@
                 <select class="form-control" th:field="*{connectedUserEmail}">
                     <option value="---">Select a connection</option>
                 <option th:each="userEmail:${connectedUserEmail}"
-                            th:value="${userEmail.}"
-                            th:text="${userEmail.name}">
+                            th:value="${userEmail.email}"
+                            th:text="${userEmail.email}">
                     </option>
-                    <option value="casm@pb.com">casm@pb.com</option>
                     <option value="jd@pmb.com">jd@pmb.com</option>
                     <option value="josm@pb.com">josm@pb.com</option>
                 </select>
             </div>
             <div class="col-sm-3 boxItem">
-                <input class="form-control" placeholder="Amount" th:field="*{amount}">
+                <input class="form-control" placeholder="The amount" th:field="*{amount}">
+                <input class="form-control"  placeholder="Purpose for the transfer" th:field="*{description}">
             </div>
             <div class="col-sm-5 text-right boxItem boxItemLast">
-                <button type="submit" class="btn btn-success btn-xl">Pay</button><!-- on button click, an ajax call will be made to the -->
+                <button type="submit" class="btn btn-success btn-xl">Pay</button>
             </div>
             <!--</form>-->
         </div>
@@ -106,7 +107,7 @@
             </thead>
             <tbody>
             <tr th:each="dto : ${dtoList}">
-                <td th:text="${dto.sendingUserID}">Example1</td>
+                <td th:text="${dto.receivingUserID}">Example1</td>
                 <td th:text="${dto.description}">Example2</td>
                 <td th:text="${'$' + dto.amount}">$12.00</td>
             </tr>

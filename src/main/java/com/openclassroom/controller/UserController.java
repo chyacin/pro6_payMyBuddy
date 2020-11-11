@@ -54,10 +54,27 @@ public class UserController {
         return modelAndView;
     }
 
+    @GetMapping("/user/addUserConnection")
+    public ModelAndView addUserConnection(@AuthenticationPrincipal ProBuddyUserDetails user, ModelAndView modelAndView){
+
+        String loggedInName = user.getUsername(); //get logged in username
 
 
-    @PostMapping("/user/addConnection")
-    public ModelAndView createAddConnection(@ModelAttribute("user") @AuthenticationPrincipal ProBuddyUserDetails user,
+        ProBuddyUser loggedInUser = userService.findUserByEmail(loggedInName);
+
+        if(loggedInName != null){
+            modelAndView.setViewName("addUserConnection");
+            modelAndView.addObject("user", loggedInUser);
+
+        }
+        else{
+            modelAndView.setViewName("redirect:/login");
+        }
+        return modelAndView;
+    }
+
+    @PostMapping("/user/addUserConnection")
+    public ModelAndView createAddUserConnection (@AuthenticationPrincipal  @ModelAttribute("user") ProBuddyUserDetails user,
                                             String connectedUserEmail, ModelAndView modelAndView,
                                             RedirectView redirectView, BindingResult result){
 

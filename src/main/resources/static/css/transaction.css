@@ -171,4 +171,9 @@
    thead {
          background-color: rgb(42, 138, 42);
          color: white;
+             }
+
+    #emailFinder{
+     align-self: flex-start;
+
    }
