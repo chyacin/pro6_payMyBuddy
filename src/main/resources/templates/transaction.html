@@ -40,7 +40,7 @@
             <a class="nav-link" href="/user/contact">Contact</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link " href="#">Log off</a>
+            <a class="nav-link " href="/logout">Log off</a>
         </li>
     </ul>
 </nav>
@@ -73,9 +73,9 @@
         <div class="row border" style="margin-bottom: 30px;">
             <!-- <form th:action="@{/makeTransfer}" method="post"> -->
             <div class="col-sm-4 boxItem boxItemFirst">
-                <select class="form-control" th:field="*{connectedUserEmail}">
+            <select class="form-control" th:field="*{connectedUserEmail}">
                     <option value="---">Select a connection</option>
-                <option th:each="userEmail:${connectedUserEmail}"
+                <option th:each="userEmail:${connectedUserList}"
                             th:value="${userEmail.email}"
                             th:text="${userEmail.email}">
                     </option>

@@ -12,7 +12,7 @@ import java.util.List;
 @Transactional
 public interface ContactsRepository extends JpaRepository<ProBuddyContacts, Integer> {
 
-    public List<ProBuddyContacts> findAll();
+    public List<ProBuddyContacts> findAllByFirstUser(ProBuddyUser user);
 
-    public List<ProBuddyContacts> findAllById(int id);
+    public List<ProBuddyContacts> findAllByFirstUserAndSecondUser(ProBuddyUser loggedInUser, ProBuddyUser userToConnectTo);
 }

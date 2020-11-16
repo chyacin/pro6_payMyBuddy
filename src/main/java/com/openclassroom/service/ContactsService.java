@@ -11,5 +11,5 @@ public interface ContactsService {
 
     public List<ProBuddyUser> findConnectedUserByConnectorUser(ProBuddyUser connectorUser);
 
-
+    List<ProBuddyContacts> findConnectionWithThisUser(ProBuddyUser loggedInUser, ProBuddyUser userToConnectTo);
 }

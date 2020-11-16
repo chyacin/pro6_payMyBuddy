@@ -1,6 +1,7 @@
 package com.openclassroom.configuration;
 
 import com.openclassroom.service.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -11,12 +12,20 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.sql.DataSource;
 
 
 @Configuration
 @EnableWebSecurity
 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    DataSource dataSource;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -59,6 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //Allow public login
                 .antMatchers("/login").permitAll()
                 .antMatchers("/login-error").permitAll()
+                .antMatchers("/register").permitAll()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/user").hasRole("USER")
                 .anyRequest().authenticated()
@@ -68,7 +78,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //This needs to be / to load the landing page
                 .defaultSuccessUrl("/", true)
                 .failureUrl("/login-error")
-                .permitAll();
+                .and()
+                .rememberMe()
+                .rememberMeCookieName("remember_me")
+                .tokenRepository(persistentTokenRepository())
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login?logout=true")
+                .and()
+                .exceptionHandling().accessDeniedPage("/403");
+
+
+
 
     }
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
+        db.setDataSource(dataSource);
+
+        return db;
+    }
+
 }

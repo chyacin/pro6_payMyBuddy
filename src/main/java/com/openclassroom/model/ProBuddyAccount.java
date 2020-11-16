@@ -2,6 +2,7 @@ package com.openclassroom.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class ProBuddyAccount {
@@ -14,7 +15,9 @@ public class ProBuddyAccount {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private ProBuddyUser user;
 
+    @NotBlank(message="Please enter your Bank Name")
     private String bankName;
+    @NotBlank(message="Please enter your Bank account number")
     private String bankAccountNumber;
     private double balance;
 

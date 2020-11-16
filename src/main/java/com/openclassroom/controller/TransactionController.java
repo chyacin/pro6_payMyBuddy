@@ -4,6 +4,7 @@ import com.openclassroom.configuration.InsufficientBalanceException;
 import com.openclassroom.model.ProBuddyTransactions;
 import com.openclassroom.model.ProBuddyUser;
 import com.openclassroom.model.ProBuddyUserDetails;
+import com.openclassroom.modelDTO.ProBuddyProfileDTO;
 import com.openclassroom.modelDTO.ProBuddyTransactionDTO;
 import com.openclassroom.modelDTO.ProBuddyTransferFormDTO;
 import com.openclassroom.service.ContactsService;
@@ -60,7 +61,7 @@ public class TransactionController {
             for (ProBuddyTransactions proBuddytransactions : transactionsList) {
                 ProBuddyTransactionDTO dto = new ProBuddyTransactionDTO();
                 dto.setSendingUserID(proBuddytransactions.getSender().getId());
-                dto.setUserName(proBuddytransactions.getReceiver().getFirstName());
+                dto.setUserName(proBuddytransactions.getReceiver().getFirstName() +" "+proBuddytransactions.getReceiver().getLastName());
                 dto.setDescription(proBuddytransactions.getDescription());
                 dto.setAmount(proBuddytransactions.getAmount());
                 dto.setFee(proBuddytransactions.getFee());
@@ -152,14 +153,22 @@ public class TransactionController {
         if (loggedInUser != null) {
             modelAndView.setViewName("profile");
             modelAndView.addObject("user", loggedInName);
-            modelAndView.addObject("bankAccountNumber", loggedInUser.getAccount().getBankAccountNumber());
-            modelAndView.addObject("balance", loggedInUser.getAccount().getBalance());
+            ProBuddyProfileDTO proBuddyProfileDTO = new ProBuddyProfileDTO();
+            proBuddyProfileDTO.setFirstName(loggedInUser.getFirstName());
+            proBuddyProfileDTO.setLastName(loggedInUser.getLastName());
+            proBuddyProfileDTO.setBankAccountNumber(loggedInUser.getAccount().getBankAccountNumber());
+            proBuddyProfileDTO.setBankName(loggedInUser.getAccount().getBankName());
+            proBuddyProfileDTO.setBalance(loggedInUser.getAccount().getBalance());
+
+            modelAndView.addObject("account", proBuddyProfileDTO);
         }
         else {
             modelAndView.setViewName("redirect:/login");
         }
         return modelAndView;
     }
+
+
 
     private void createTransactionHistory(List<ProBuddyTransactionDTO> dtoList,
                                           ProBuddyTransactions proBuddyTransactions) {

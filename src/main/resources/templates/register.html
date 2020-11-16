@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Register</title>
+    <link rel="stylesheet" th:href="@{css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{css/main.css}">
+    <link rel="stylesheet" th:href="@{css/font-awesome/font-awesome.min.css}">
+</head>
+<body>
+
+<header>
+    <nav class="navbar navbar-dark bg-dark navbar-height">
+        <a class="navbar-brand" href="/">
+            <div class="brand-sizing">
+                <i class="fa fa-circle fa-xs"></i>
+                <i class="fa fa-circle fa-xs"></i>
+                <i class="fa fa-circle fa-xs"></i>
+            </div>
+        </a>
+        <label class="navbar-center">Pay My Buddy</label>
+    </nav>
+</header>
+<div class="container">
+    <div class="custom container-fluid d-flex align-items-center justify-content-center">
+        <div class="row border border-dark border-round">
+
+            <div class="col mt-5 col-xs-12 col-md-12 col-lg-12 text-center">
+                <button type="button" class="btn btn-success">Pay My Buddy</button>
+
+                <form th:action="@{/register}" th:object="${user}" method="post">
+
+                    <div class="form-group form-group-lg setmargintop">
+                        <div class="input-container">
+                            <i class="fa fa-user icon"></i>
+                            <input class="form-control input-lg"
+                                   type="text" id="firstName" name="firstname" placeholder="First Name" th:field="*{firstName}">
+                            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName"}></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-lg setmargintop">
+                        <div class="input-container">
+                            <i class="fa fa-user icon"></i>
+                            <input class="form-control input-lg"
+                                   type="text" id="lastName" name="lastname" placeholder="Last Name" th:field="*{lastName}">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group form-group-lg setmargintop">
+                        <div class="input-container">
+                            <i class="fa fa-envelope icon"></i>
+                            <input class="form-control input-lg"
+                                   type="text" id="username" name="username" placeholder="Email" th:field="*{email}">
+                            <span class="text-danger" ></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-lg setmargintop">
+                        <div class="input-container">
+                            <i class="fa fa-address-card icon"></i>
+                            <input class="form-control input-lg"
+                                   type="text" id="address" name="address" placeholder="Address" th:field="*{address}">
+                        </div>
+                    </div>
+
+                    <div class="form-group setmargintop">
+                        <div class="input-container ">
+                            <i class="fa fa-asterisk icon"></i>
+                            <input type="password" class="form-control input-lg"
+                                   id="password" name="password" placeholder="Password" th:field="*{password}">
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-lg setmargintop">
+                        <div class="input-container">
+                            <i class="fa fa-child icon"></i>
+                            <input class="form-control input-lg"
+                                   type="text" id="age" name="age" placeholder="Age" th:field="*{age}">
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-lg setmargintop">
+                        <div class="input-container">
+                            <i class="fa fa-phone icon"></i>
+                            <input class="form-control input-lg"
+                                   type="text" id="phone" name="bankName" placeholder="Bank Name" th:field="*{phone}">
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-lg setmargintop">
+                        <div class="input-container">
+                            <i class="fa fa-id-card icon"></i>
+                            <input class="form-control input-lg"
+                                   type="text" id="nationalID" name="nationalID" placeholder="ID Card" th:field="*{nationalID}">
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-lg setmargintop">
+                        <div class="input-container">
+                            <i class="fa fa-id-card icon"></i>
+                            <input class="form-control input-lg"
+                                   type="text" id="bankName" name="bankName" placeholder="Bank name" th:field="*{bankName}">
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-lg setmargintop">
+                        <div class="input-container">
+                            <i class="fa fa-id-card icon"></i>
+                            <input class="form-control input-lg"
+                                   type="text" id="bankAccountNumber" name="bankAccountNumber" placeholder="Bank Account number" th:field="*{bankAccountNumber}">
+                        </div>
+                    </div>
+
+                    <div class="form-group setdoublemargintop setmarginbottom">
+                        <input type="submit" class="btn btn-primary btn-lg text-center" id="submit" name="_submit" value="Register"/>
+                    </div>
+                </form>
+                <p></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

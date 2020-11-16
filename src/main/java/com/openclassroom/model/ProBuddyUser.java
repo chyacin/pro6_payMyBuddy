@@ -2,6 +2,9 @@ package com.openclassroom.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -11,15 +14,25 @@ public class ProBuddyUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank(message="Please enter your First Name")
     private String firstName;
+    @NotBlank(message="Please enter your Last Name")
     private String lastName;
+    @NotBlank(message="Please enter your address")
     private String address;
+    @NotBlank(message="Please enter your email address")
     private String email;
+    
+    @Min(message = "must be older or equal to 18", value = 0L)
+    @NotNull(message="Please enter your age")
     private int age;
+    @NotBlank(message="Please enter your phone")
     private String phone;
+    @NotBlank(message="Please enter your ID Card number")
     private String nationalID;
+    @NotBlank(message="Please create a password")
     private String password;
-    private boolean isEnabled;
+    private boolean enabled;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     private ProBuddyAccount account;
@@ -157,10 +170,10 @@ public class ProBuddyUser {
     }
 
     public boolean isEnabled() {
-        return isEnabled;
+        return enabled;
     }
 
     public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
+        this.enabled = enabled;
     }
 }

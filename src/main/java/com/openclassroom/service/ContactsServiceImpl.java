@@ -20,13 +20,14 @@ public class ContactsServiceImpl implements  ContactsService{
 
 
 
+
     @Override
     public void createContactsConnection(ProBuddyUser connectorUser, String connectedUserEmail) {
     if((!(connectorUser.getEmail().equals(connectedUserEmail))) && (userService.findUserByEmail(connectedUserEmail) != null)) {
-        List<ProBuddyContacts> contactsList = contactsRepository.findAllById(connectorUser.getId());
+        List<ProBuddyContacts> contactsList = contactsRepository.findAllByFirstUser(connectorUser);
         ProBuddyUser connectedUser = userService.findUserByEmail(connectedUserEmail);
         if(contactsList.isEmpty() || contactsList.stream().noneMatch(proBuddyContacts ->
-                userService.findUserById(proBuddyContacts.getSecondUser().getId()).equals(connectedUser)));
+                userService.findUserByEmail(proBuddyContacts.getSecondUser().getEmail()).equals(connectedUser)));
         ProBuddyContacts newContact = new ProBuddyContacts(connectorUser,connectedUser);
         contactsRepository.save(newContact);
         }
@@ -38,13 +39,20 @@ public class ContactsServiceImpl implements  ContactsService{
         if(userService == null);
            List<ProBuddyUser> connectedUserList = new ArrayList<>();
         if (userService.findUserById(connectorUser.getId()) != null) {
-            for(ProBuddyContacts contacts: contactsRepository.findAllById(connectorUser.getId())){
-                connectedUserList.add(userService.findUserById(contacts.getSecondUser().getId()));
+            List<ProBuddyContacts> cList = contactsRepository.findAllByFirstUser(connectorUser);
+            for(ProBuddyContacts contacts: cList){
+          //  for(ProBuddyContacts contacts: contactsRepository.findAllById(connectorUser.getId())){
+                connectedUserList.add(userService.findUserByEmail(contacts.getSecondUser().getEmail()));
+              //  connectedUserList.add(userService.findUserById(contacts.getSecondUser().getId()));
             }
         }
 
         return connectedUserList;
     }
 
+    @Override
+    public List<ProBuddyContacts> findConnectionWithThisUser(ProBuddyUser loggedInUser, ProBuddyUser userToConnectTo) {
+        return contactsRepository.findAllByFirstUserAndSecondUser(loggedInUser, userToConnectTo);
+    }
 
 }

@@ -1,8 +1,10 @@
 package com.openclassroom.controller;
 
+import com.openclassroom.model.ProBuddyAccount;
 import com.openclassroom.model.ProBuddyContacts;
 import com.openclassroom.model.ProBuddyUser;
 import com.openclassroom.model.ProBuddyUserDetails;
+import com.openclassroom.modelDTO.ProBuddyUserDTO;
 import com.openclassroom.service.ContactsService;
 import com.openclassroom.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,37 +20,42 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.validation.Valid;
+import java.util.List;
+
 @Controller
 public class UserController {
 
+    private ProBuddyAccount proBuddyAccount;
+    private ProBuddyContacts proBuddyContacts;
     @Autowired
     private UserService userService;
-    private ProBuddyContacts proBuddyContacts;
     @Autowired
     private ContactsService contactsService;
 
+
+
     @GetMapping("/register")
-    public ModelAndView registerProBuddy(@ModelAttribute("user")ProBuddyUser proBuddyUser,
-                                         ModelAndView modelAndView){
+    public ModelAndView registerProBuddy(ModelAndView modelAndView){
 
         modelAndView.setViewName("register");
-        modelAndView.addObject("user");
+        modelAndView.addObject("user", new ProBuddyUserDTO());
         return modelAndView;
     }
 
     @PostMapping("/register")
-    public ModelAndView registerNewProBuddyUser(@Validated @ModelAttribute("user") ProBuddyUser proBuddyUser,
+    public ModelAndView registerNewProBuddyUser(@Valid @ModelAttribute("user") ProBuddyUserDTO proBuddyUserDTO,
                                                 ModelAndView modelAndView, BindingResult result){
 
-        ProBuddyUser userByEmail = userService.findUserByEmail(proBuddyUser.getEmail());
-        if(userByEmail.getEmail().contentEquals(proBuddyUser.getEmail())) {
+        ProBuddyUser userByEmail = userService.findUserByEmail(proBuddyUserDTO.getEmail());
+        if(userByEmail != null) {
             result.rejectValue("Please choose another email address","The email address that you entered is already taken");
         }
         if(result.hasErrors()) {
             modelAndView.setViewName("/register");
         }
         else{
-            userService.createNewUserByRegistration(proBuddyUser);
+            userService.createNewUserByRegistration(proBuddyUserDTO);
             modelAndView.setViewName("/login");
         }
         return modelAndView;
@@ -86,9 +92,14 @@ public class UserController {
         ProBuddyUser loggedInUser = userService.findUserByEmail(loggedInName);
 
         if(loggedInName.contentEquals(connectedUserEmail) == false){
-            if(userService.findUserByEmail(connectedUserEmail) != null){
-                contactsService.createContactsConnection(loggedInUser,connectedUserEmail);
-                redirectView.setUrl("/user/transfer");
+            ProBuddyUser userToConnectTo = userService.findUserByEmail(connectedUserEmail);
+            if(userToConnectTo != null){
+                List<ProBuddyContacts> existingConnectedUser = contactsService.findConnectionWithThisUser(loggedInUser, userToConnectTo);
+                System.out.println("Number of existing connection with " + connectedUserEmail + " " + existingConnectedUser.size());
+                if(existingConnectedUser.size() == 0) {
+                    contactsService.createContactsConnection(loggedInUser, connectedUserEmail);
+                }
+                redirectView.setUrl("/user/makeTransfer");
                 modelAndView.setView(redirectView);
             }
             else {
@@ -101,4 +112,5 @@ public class UserController {
         }
         return  modelAndView;
     }
+
 }

@@ -3,12 +3,14 @@ package com.openclassroom.service;
 import com.openclassroom.model.ProBuddyAccount;
 import com.openclassroom.model.ProBuddyRole;
 import com.openclassroom.model.ProBuddyUser;
+import com.openclassroom.modelDTO.ProBuddyUserDTO;
 import com.openclassroom.repositories.RoleRepository;
 import com.openclassroom.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 @Service
@@ -24,6 +26,7 @@ public class UserServiceImpl implements UserService{
     private AccountService accountService;
     @Autowired
     private RoleService roleService;
+    private DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     @Override
     public void save(ProBuddyUser proBuddyUser) {
@@ -55,31 +58,40 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ProBuddyUser createNewUserByRegistration(ProBuddyUser proBuddyUser) {
+    public ProBuddyUser createNewUserByRegistration(ProBuddyUserDTO proBuddyUserDTO) {
 
         ProBuddyAccount account = new ProBuddyAccount();
-        account.setUser(proBuddyUser);
-        account.setBalance(0.0);
-        accountService.createAccount(account);
+        // create probuddyuser from DTO
+        ProBuddyUser proBuddyUser = proBuddyUserDTO.createProBuddyUser();
+        String password = new BCryptPasswordEncoder().encode(proBuddyUser.getPassword());
+        account.setBalance(generateRandomAccountBalance());
 
         Set<ProBuddyRole> role =  new HashSet<>();
         ProBuddyRole proBuddyRole = roleService.getRoleByName("User");
         role.add(proBuddyRole);
 
+        proBuddyUser.setRoles(role);
+        proBuddyUser.setPassword(password);
 
-        ProBuddyUser newUser = new ProBuddyUser();
-        newUser.setFirstName(proBuddyUser.getFirstName());
-        newUser.setLastName(proBuddyUser.getLastName());
-        newUser.setAddress(proBuddyUser.getAddress());
-        newUser.setEmail(proBuddyUser.getEmail());
-        newUser.setAge(proBuddyUser.getAge());
-        newUser.setPhone(proBuddyUser.getPhone());
-        newUser.setNationalID(proBuddyUser.getNationalID());
-        newUser.setAccount(account);
-        newUser.setPassword(proBuddyUser.getPassword());
-        newUser.setRoles(role);
+        ProBuddyUser savedUser = userRepository.save(proBuddyUser);
 
-        return userRepository.save(newUser);
+        account.setUser(savedUser);
+        account.setBankName(proBuddyUserDTO.getBankName());
+        account.setBankAccountNumber(proBuddyUserDTO.getBankAccountNumber());
+        ProBuddyAccount savedAccount = accountService.createAccount(account);
+
+        savedUser.setAccount(savedAccount);
+        userRepository.save(savedUser);
+
+
+
+        return savedUser;
+    }
+
+    private double generateRandomAccountBalance(){
+        return Math.round(Math.random() * 10000);
+        //String initialAmount = decimalFormat.format(Math.random() * 10000);
+        //return Double.parseDouble(initialAmount);
     }
 
 
