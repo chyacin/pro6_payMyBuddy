@@ -24,8 +24,6 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    DataSource dataSource;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -68,6 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //Allow public login
                 .antMatchers("/login").permitAll()
                 .antMatchers("/login-error").permitAll()
+                .antMatchers("/error").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/user").hasRole("USER")
@@ -77,14 +76,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 //This needs to be / to load the landing page
                 .defaultSuccessUrl("/", true)
-                .failureUrl("/login-error")
-                .and()
-                .rememberMe()
-                .rememberMeCookieName("remember_me")
-                .tokenRepository(persistentTokenRepository())
+                .failureUrl("/login?error=true")
                 .and()
                 .logout()
-                .logoutSuccessUrl("/login?logout=true")
                 .and()
                 .exceptionHandling().accessDeniedPage("/403");
 
@@ -93,12 +87,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
-        db.setDataSource(dataSource);
-
-        return db;
-    }
 
 }

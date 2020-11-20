@@ -14,8 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Repository
 public interface LoginRepository extends JpaRepository<ProBuddyLogin, Integer>{
-//public interface LoginRepository extends JpaRepository<ProBuddyLogin, Integer> {
 
-   @Autowired
-    SessionFactory sessionFactory = null;
+
+
 }

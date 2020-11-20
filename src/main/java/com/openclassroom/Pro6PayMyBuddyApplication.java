@@ -35,13 +35,13 @@ public class Pro6PayMyBuddyApplication {
 			// Check the database table ProBuddyContacts manually
 
 
-			ProBuddyRole adminRole = new ProBuddyRole("admin");
-			ProBuddyRole userRole = new ProBuddyRole("user");
+			ProBuddyRole adminRole = new ProBuddyRole("ADMIN");
+			ProBuddyRole userRole = new ProBuddyRole("USER");
 			roleRepository.save(adminRole);
 			roleRepository.save(userRole);
 
-			ProBuddyRole findAdminRole = roleRepository.findByName("admin");
-			ProBuddyRole findUserRole = roleRepository.findByName("user");
+			ProBuddyRole findAdminRole = roleRepository.findByName("ADMIN");
+			ProBuddyRole findUserRole = roleRepository.findByName("USER");
 
 			Set<ProBuddyRole> roleList = new HashSet<>();
 			roleList.add(findAdminRole);
@@ -61,6 +61,8 @@ public class Pro6PayMyBuddyApplication {
 			userRepository.save(user1);
 			account1.setUser(user1);
 			accountRepository.save(account1);
+
+
 
 
 			password = new BCryptPasswordEncoder().encode("krazy8");

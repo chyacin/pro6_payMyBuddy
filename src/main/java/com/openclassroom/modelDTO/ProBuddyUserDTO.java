@@ -1,33 +1,37 @@
 package com.openclassroom.modelDTO;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.openclassroom.model.ProBuddyUser;
 
 
 public class ProBuddyUserDTO {
 
-    @NotBlank(message="Please enter your First Name")
+    @NotBlank(message="Please enter your first name")
     private String firstName;
-    @NotBlank(message="Please enter your Last Name")
+    @NotBlank(message="Please enter your last name")
     private String lastName;
     @NotBlank(message="Please enter your address")
     private String address;
     @NotBlank(message="Please enter your email address")
     private String email;
-    @NotBlank(message="Please enter your age")
-    private int age;
+    @Min(message = "must be older or equal to 18", value = 0L)
+    @NotNull(message="Please enter your age")
+    private String age;
     @NotBlank(message="Please enter your phone")
     private String phone;
     @NotBlank(message="Please enter your ID Card number")
     private String nationalID;
     @NotBlank(message="Please create a password")
     private String password;
-    @NotBlank(message="Please enter your Bank Name")
+    @NotBlank(message="Please enter your bank name")
     private String bankName;
-    @NotBlank(message="Please enter your Bank account number")
+    @NotBlank(message="Please enter your bank account number")
     private String bankAccountNumber;
 
-    public ProBuddyUserDTO(String firstName, String lastName, String address, String email, int age, String phone,
+    public ProBuddyUserDTO(String firstName, String lastName, String address, String email, String age, String phone,
                            String nationalID, String password, String bankName, String bankAccountNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -76,11 +80,11 @@ public class ProBuddyUserDTO {
         this.email = email;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 
@@ -131,7 +135,7 @@ public class ProBuddyUserDTO {
         proBuddyUser.setEmail(email);
         proBuddyUser.setAddress(address);
         proBuddyUser.setPassword(password);
-        proBuddyUser.setAge(age);
+        proBuddyUser.setAge(Integer.parseInt(age.toString()));
         proBuddyUser.setPhone(phone);
         proBuddyUser.setNationalID(nationalID);
         proBuddyUser.setEnabled(false);

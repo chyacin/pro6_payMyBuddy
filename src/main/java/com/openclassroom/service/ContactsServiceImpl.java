@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ContactsServiceImpl implements  ContactsService{
+public class ContactsServiceImpl implements ContactsService{
 
 
     @Autowired

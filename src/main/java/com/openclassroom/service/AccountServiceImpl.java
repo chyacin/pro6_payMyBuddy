@@ -36,6 +36,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void updateAccount(ProBuddyAccount account) {
         ProBuddyAccount updatedAccount = findAccountById(account.getId());
+        updatedAccount.setBankName(account.getBankName());
+        updatedAccount.setBankAccountNumber(account.getBankAccountNumber());
         updatedAccount.setBalance(account.getBalance());
         accountRepository.save(updatedAccount);
 

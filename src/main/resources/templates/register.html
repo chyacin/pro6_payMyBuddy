@@ -33,18 +33,18 @@
                     <div class="form-group form-group-lg setmargintop">
                         <div class="input-container">
                             <i class="fa fa-user icon"></i>
-                            <input class="form-control input-lg"
-                                   type="text" id="firstName" name="firstname" placeholder="First Name" th:field="*{firstName}">
-                            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName"}></p>
+                            <input class="form-control input-lg" type="text" id="firstName" name="firstName" placeholder="First Name" th:field="*{firstName}">
                         </div>
+                        <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
                     </div>
 
                     <div class="form-group form-group-lg setmargintop">
                         <div class="input-container">
                             <i class="fa fa-user icon"></i>
                             <input class="form-control input-lg"
-                                   type="text" id="lastName" name="lastname" placeholder="Last Name" th:field="*{lastName}">
+                                   type="text" id="lastName" name="lastName" placeholder="Last Name" th:field="*{lastName}">
                         </div>
+                        <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
                     </div>
 
 
@@ -52,9 +52,11 @@
                         <div class="input-container">
                             <i class="fa fa-envelope icon"></i>
                             <input class="form-control input-lg"
-                                   type="text" id="username" name="username" placeholder="Email" th:field="*{email}">
+                                   type="text" id="email" name="email" placeholder="Email" th:field="*{email}">
                             <span class="text-danger" ></span>
                         </div>
+                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+
                     </div>
 
                     <div class="form-group form-group-lg setmargintop">
@@ -63,6 +65,7 @@
                             <input class="form-control input-lg"
                                    type="text" id="address" name="address" placeholder="Address" th:field="*{address}">
                         </div>
+                        <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
                     </div>
 
                     <div class="form-group setmargintop">
@@ -71,6 +74,7 @@
                             <input type="password" class="form-control input-lg"
                                    id="password" name="password" placeholder="Password" th:field="*{password}">
                         </div>
+                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
                     </div>
 
                     <div class="form-group form-group-lg setmargintop">
@@ -79,14 +83,17 @@
                             <input class="form-control input-lg"
                                    type="text" id="age" name="age" placeholder="Age" th:field="*{age}">
                         </div>
+                        <p th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></p>
+
                     </div>
 
                     <div class="form-group form-group-lg setmargintop">
                         <div class="input-container">
                             <i class="fa fa-phone icon"></i>
                             <input class="form-control input-lg"
-                                   type="text" id="phone" name="bankName" placeholder="Bank Name" th:field="*{phone}">
+                                   type="text" id="phone" name="phone" placeholder="Phone number" th:field="*{phone}">
                         </div>
+                        <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
                     </div>
 
                     <div class="form-group form-group-lg setmargintop">
@@ -95,6 +102,7 @@
                             <input class="form-control input-lg"
                                    type="text" id="nationalID" name="nationalID" placeholder="ID Card" th:field="*{nationalID}">
                         </div>
+                        <p th:if="${#fields.hasErrors('nationalID')}" th:errors="*{nationalID}"></p>
                     </div>
 
                     <div class="form-group form-group-lg setmargintop">
@@ -103,6 +111,7 @@
                             <input class="form-control input-lg"
                                    type="text" id="bankName" name="bankName" placeholder="Bank name" th:field="*{bankName}">
                         </div>
+                        <p th:if="${#fields.hasErrors('bankName')}" th:errors="*{bankName}"></p>
                     </div>
 
                     <div class="form-group form-group-lg setmargintop">
@@ -111,6 +120,7 @@
                             <input class="form-control input-lg"
                                    type="text" id="bankAccountNumber" name="bankAccountNumber" placeholder="Bank Account number" th:field="*{bankAccountNumber}">
                         </div>
+                        <p th:if="${#fields.hasErrors('bankAccountNumber')}" th:errors="*{bankAccountNumber}"></p>
                     </div>
 
                     <div class="form-group setdoublemargintop setmarginbottom">

@@ -44,21 +44,20 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ModelAndView registerNewProBuddyUser(@Valid @ModelAttribute("user") ProBuddyUserDTO proBuddyUserDTO,
-                                                ModelAndView modelAndView, BindingResult result){
+    public String registerNewProBuddyUser(@ModelAttribute("user") @Valid ProBuddyUserDTO user,
+                                              BindingResult result){
 
-        ProBuddyUser userByEmail = userService.findUserByEmail(proBuddyUserDTO.getEmail());
+        ProBuddyUser userByEmail = userService.findUserByEmail(user.getEmail());
         if(userByEmail != null) {
-            result.rejectValue("Please choose another email address","The email address that you entered is already taken");
+            result.rejectValue("email",null, "The email address that you entered is already taken");
         }
         if(result.hasErrors()) {
-            modelAndView.setViewName("/register");
+            return "register";
         }
         else{
-            userService.createNewUserByRegistration(proBuddyUserDTO);
-            modelAndView.setViewName("/login");
+            userService.createNewUserByRegistration(user);
+            return "login";
         }
-        return modelAndView;
     }
 
     @GetMapping("/user/addUserConnection")
@@ -113,4 +112,9 @@ public class UserController {
         return  modelAndView;
     }
 
+    @GetMapping("/403")
+    public String error(){
+
+        return "accessDenied";
+    }
 }

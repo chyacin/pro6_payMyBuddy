@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService{
     private AccountService accountService;
     @Autowired
     private RoleService roleService;
-    private DecimalFormat decimalFormat = new DecimalFormat("0.00");
+    //private DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     @Override
     public void save(ProBuddyUser proBuddyUser) {
@@ -48,6 +48,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public List<ProBuddyUser> findAllUsersByEmail(String email) {
+      List<ProBuddyUser> userList = userRepository.findAll().stream().filter(pro -> pro.getEmail().equals(email))
+              .collect(Collectors.toList());
+      return userList;
+    }
+
+
+    @Override
     public ProBuddyUser findUserById(int id) {
         Optional<ProBuddyUser> proBuddyUserOptional = userRepository.findById(id);
         if(proBuddyUserOptional.isPresent()) {
@@ -64,7 +72,7 @@ public class UserServiceImpl implements UserService{
         // create probuddyuser from DTO
         ProBuddyUser proBuddyUser = proBuddyUserDTO.createProBuddyUser();
         String password = new BCryptPasswordEncoder().encode(proBuddyUser.getPassword());
-        account.setBalance(generateRandomAccountBalance());
+        account.setBalance(25.00);
 
         Set<ProBuddyRole> role =  new HashSet<>();
         ProBuddyRole proBuddyRole = roleService.getRoleByName("User");
@@ -88,11 +96,11 @@ public class UserServiceImpl implements UserService{
         return savedUser;
     }
 
-    private double generateRandomAccountBalance(){
+   /* private double generateRandomAccountBalance(){
         return Math.round(Math.random() * 10000);
         //String initialAmount = decimalFormat.format(Math.random() * 10000);
         //return Double.parseDouble(initialAmount);
-    }
+    }*/
 
 
 }

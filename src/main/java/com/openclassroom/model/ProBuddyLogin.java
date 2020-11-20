@@ -25,7 +25,7 @@ public class ProBuddyLogin {
     @Type(type = "boolean")
     private Boolean success;
 
-    protected ProBuddyLogin() {
+    public ProBuddyLogin() {
     }
 
     public ProBuddyLogin(Integer id, ProBuddyUser user, Timestamp date, Boolean success) {
