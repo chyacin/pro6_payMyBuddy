@@ -37,14 +37,15 @@ public class LoginController {
 	@GetMapping(value = "/")
 	public String getUser(@AuthenticationPrincipal ProBuddyUserDetails user) {
 
-		String loggedInName = user.getUsername(); //get logged in username
+	//	String loggedInName = user.getUsername(); //get logged in username
 
-		ProBuddyUser loggedInUser = userService.findUserByEmail(loggedInName);
-		if (loggedInUser != null && loggedInUser.equals("ADMIN"))  {
+		if(user != null && user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))){
+		//if (loggedInUser != null && loggedInUser.equals("ADMIN"))  {
 			return "loginHistory";
 		}
 		else{
-			if(loggedInUser != null && loggedInUser.equals("USER") ){
+			if(user != null && user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("USER"))){
+		//	if(loggedInUser != null && loggedInUser.equals("USER") ){
 				return "home";
 			}
 		}
