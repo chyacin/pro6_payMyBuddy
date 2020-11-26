@@ -12,11 +12,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.constraints.Max;
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.junit.Assert.assertEquals;
@@ -25,7 +27,7 @@ import static org.mockito.Mockito.times;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class ContactsServiceTest {
+public class  ContactsServiceTest {
 
     @InjectMocks
     private ContactsServiceImpl contactsService;
@@ -46,9 +48,6 @@ public class ContactsServiceTest {
         ProBuddyUser secondUser = new ProBuddyUser();
         secondUser.setEmail("secondUser@pmb.com");
 
-        List<ProBuddyUser> firstUserList = new ArrayList<>();
-        firstUserList.add(firstUser);
-
         Mockito.when(contactsRepository.findAllByFirstUser(firstUser)).thenReturn(new ArrayList<>());
         Mockito.when(userService.findUserByEmail(secondUser.getEmail())).thenReturn(secondUser);
 
@@ -62,10 +61,50 @@ public class ContactsServiceTest {
     @Test
     public void findConnectedUserByConnectorUser_returnConnectedUser(){
 
+
+        //arrange
+        ProBuddyUser loggedInUser = new ProBuddyUser();
+        ProBuddyUser userToConnectTo = new ProBuddyUser();
+
+        ProBuddyContacts connectedUsers = new ProBuddyContacts(loggedInUser, userToConnectTo);
+
+        List<ProBuddyContacts> connectedUsersList = new ArrayList<>();
+        connectedUsersList.add(connectedUsers);
+
+        Mockito.when(contactsRepository.findAllByFirstUser(loggedInUser)).thenReturn(connectedUsersList);
+        Mockito.when(userService.findUserById(loggedInUser.getId())).thenReturn(loggedInUser);
+
+        //act
+        List<ProBuddyUser> result = contactsService.findConnectedUserByConnectorUser(loggedInUser);
+
+        //assert
+        assertNotNull(result);
+        assertEquals(1,result.size());
     }
 
     @Test
     public void findConnectionWithThisUser_returnConnection(){
+
+        //arrange
+        ProBuddyUser loggedInUser = new ProBuddyUser();
+
+        ProBuddyUser userToConnectTo = new ProBuddyUser();
+
+        ProBuddyContacts connectedUsers = new ProBuddyContacts(loggedInUser, userToConnectTo);
+
+        List<ProBuddyContacts> connectedUsersList = new ArrayList<>();
+        connectedUsersList.add(connectedUsers);
+
+        Mockito.when(contactsRepository.findAllByFirstUserAndSecondUser(loggedInUser, userToConnectTo)).thenReturn(connectedUsersList);
+        //act
+        List<ProBuddyContacts> result = contactsService.findConnectionWithThisUser(loggedInUser, userToConnectTo);
+
+        //assert
+        assertNotNull(result);
+        assertEquals(1,result.size());
+        assertEquals(loggedInUser, result.get(0).getFirstUser());
+        assertEquals(userToConnectTo, result.get(0).getSecondUser());
+
 
     }
 

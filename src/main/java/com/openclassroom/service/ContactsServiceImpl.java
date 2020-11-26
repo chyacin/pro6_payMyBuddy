@@ -41,9 +41,7 @@ public class ContactsServiceImpl implements ContactsService{
         if (userService.findUserById(connectorUser.getId()) != null) {
             List<ProBuddyContacts> cList = contactsRepository.findAllByFirstUser(connectorUser);
             for(ProBuddyContacts contacts: cList){
-          //  for(ProBuddyContacts contacts: contactsRepository.findAllById(connectorUser.getId())){
                 connectedUserList.add(userService.findUserByEmail(contacts.getSecondUser().getEmail()));
-              //  connectedUserList.add(userService.findUserById(contacts.getSecondUser().getId()));
             }
         }
 

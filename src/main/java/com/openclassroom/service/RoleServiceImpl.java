@@ -20,6 +20,7 @@ public class RoleServiceImpl implements RoleService{
     }
     @Override
     public ProBuddyRole getRoleByName(String name) {
+
         return roleRepository.findByName(name);
     }
 }

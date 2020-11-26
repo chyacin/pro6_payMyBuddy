@@ -39,7 +39,9 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public List<ProBuddyLogin> findAll() {
-        return loginRepository.findAll();
+    public List<ProBuddyLogin> findAllLogins() {
+
+        List<ProBuddyLogin> logins =loginRepository.findAll();
+        return logins;
     }
 }

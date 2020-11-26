@@ -69,13 +69,13 @@ public class UserServiceImpl implements UserService{
     public ProBuddyUser createNewUserByRegistration(ProBuddyUserDTO proBuddyUserDTO) {
 
         ProBuddyAccount account = new ProBuddyAccount();
-        // create probuddyuser from DTO
+        // create proBuddyUser from DTO
         ProBuddyUser proBuddyUser = proBuddyUserDTO.createProBuddyUser();
         String password = new BCryptPasswordEncoder().encode(proBuddyUser.getPassword());
-        account.setBalance(25.00);
+        account.setBalance(0.00);
 
         Set<ProBuddyRole> role =  new HashSet<>();
-        ProBuddyRole proBuddyRole = roleService.getRoleByName("User");
+        ProBuddyRole proBuddyRole = roleService.getRoleByName("USER");
         role.add(proBuddyRole);
 
         proBuddyUser.setRoles(role);

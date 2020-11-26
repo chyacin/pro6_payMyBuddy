@@ -11,6 +11,6 @@ public interface LoginService {
 
     public void createLoginHistory(ProBuddyUser user, Timestamp date, Boolean success);
 
-    public List<ProBuddyLogin> findAll();
+    public List<ProBuddyLogin> findAllLogins();
 
 }

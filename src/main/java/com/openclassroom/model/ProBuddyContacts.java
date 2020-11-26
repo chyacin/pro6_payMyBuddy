@@ -21,7 +21,7 @@ public class ProBuddyContacts {
     @JoinColumn(referencedColumnName = "id")
     private ProBuddyUser secondUser;
 
-    protected ProBuddyContacts() {
+    public ProBuddyContacts() {
     }
 
     public ProBuddyContacts(int id, ProBuddyUser firstUser, ProBuddyUser secondUser) {

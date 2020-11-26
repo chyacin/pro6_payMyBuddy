@@ -82,4 +82,35 @@ public class TransactionsServiceImpl implements TransactionsService {
         return transactionsRepository.findAll();
     }
 
+    @Override
+    public void withdraw(ProBuddyUser user, double amount)
+    {
+        // Get the logged in user
+        // Get his ProBuddyAccount object
+        ProBuddyAccount account = accountService.findAccountByUserEmail(user.getEmail());
+
+        // credit the ProBuddyAccount with the given amount
+        account.setBalance(account.getBalance() + amount);
+        // Call account service updateAccount method to save it
+        //accountService.updateAccount(account);
+        accountRepository.save(account);
+
+    }
+
+
+    @Override
+    public void deposit(ProBuddyUser user, double amount) throws InsufficientBalanceException
+    {
+        // Get his ProBuddyAccount object
+        ProBuddyAccount account = accountService.findAccountByUserEmail(user.getEmail());
+        if((account.getBalance() - amount) < 0){
+            throw new InsufficientBalanceException("You have insufficient funds for this transaction");
+        }
+        // debit the ProBuddyAccount with the given amount
+        account.setBalance(account.getBalance() - amount);
+        // Call account service updateAccount method to save it
+        //accountService.updateAccount(account);
+        accountRepository.save(account);
+    }
+
 }

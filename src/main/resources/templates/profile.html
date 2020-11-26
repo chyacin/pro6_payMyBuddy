@@ -40,7 +40,7 @@
             <a class="nav-link" href="/user/contact">Contact</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link " href="/logout">Log off</a>
+            <a class="nav-link " href="/logout">Logout</a>
         </li>
     </ul>
 </nav>
@@ -81,27 +81,27 @@
 
        <h2 class="col-sm-8">Bank Transfer</h2>
 
+    <form  th:action="@{/user/withdrawFromBank}" th:object="${credit}" method="post">
         <div class="row border" style="margin-bottom: 30px;">
-
             <div class="col-sm-3 boxItem">
-                <input class="form-control" placeholder="amount " name="Transfer to the Bank">
+                <input class="form-control" placeholder="amount" th:field="${credit.amount}">
             </div>
             <div class="col-sm-5 text-right boxItem boxItemLast">
-                <button type="submit" class="btn btn-success btn-xl">Add money</button>
+                <button type="submit" class="btn btn-success btn-xl">Deposit</button>
             </div>
-
         </div>
+    </form>
 
-        <div class="row border" style="margin-bottom: 30px;">
-
+    <form th:action="@{/user/depositToBank}" th:object="${debit}" method="post">
+    <div class="row border" style="margin-bottom: 30px;">
             <div class="col-sm-3 boxItem">
-                <input class="form-control" placeholder="amount" name="Transfer from the Bank">
+                <input class="form-control" placeholder="amount" th:field="${debit.amount}">
             </div>
             <div class="col-sm-5 text-right boxItem boxItemLast">
-                <button type="submit" class="btn btn-success btn-xl">Get money</button>
+                <button type="submit" class="btn btn-success btn-xl">Withdraw</button>
             </div>
-
         </div>
+    </form>
 
 
     <div class="row">
@@ -122,3 +122,7 @@
 
 </body>
 </html>
+
+
+<!---->
+<!---->

@@ -4,25 +4,21 @@ import com.openclassroom.configuration.InsufficientBalanceException;
 import com.openclassroom.model.ProBuddyTransactions;
 import com.openclassroom.model.ProBuddyUser;
 import com.openclassroom.model.ProBuddyUserDetails;
-import com.openclassroom.modelDTO.ProBuddyProfileDTO;
-import com.openclassroom.modelDTO.ProBuddyTransactionDTO;
-import com.openclassroom.modelDTO.ProBuddyTransferFormDTO;
+import com.openclassroom.modelDTO.*;
 import com.openclassroom.service.ContactsService;
 import com.openclassroom.service.TransactionsService;
 import com.openclassroom.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -161,6 +157,8 @@ public class TransactionController {
             proBuddyProfileDTO.setBalance(loggedInUser.getAccount().getBalance());
 
             modelAndView.addObject("account", proBuddyProfileDTO);
+            modelAndView.addObject("debit", new ProBuddyDepositToBankDTO());
+            modelAndView.addObject("credit", new ProBuddyWithdrawFromBankDTO());
         }
         else {
             modelAndView.setViewName("redirect:/login");
@@ -178,5 +176,67 @@ public class TransactionController {
         dto.setDescription(proBuddyTransactions.getDescription());
         dto.setAmount(proBuddyTransactions.getAmount());
         dtoList.add(dto);
+    }
+
+
+
+    @PostMapping("/user/depositToBank")
+    public ModelAndView depositMoney(@AuthenticationPrincipal ProBuddyUserDetails user, @ModelAttribute("debit")
+                                     @Valid ProBuddyDepositToBankDTO transaction,
+                                      BindingResult result, ModelAndView modelAndView){
+
+        // get the amount to debit
+        double amount = transaction.getAmount();
+
+        String loggedInName = user.getUsername(); //get logged in username
+
+        ProBuddyUser loggedInUser = userService.findUserByEmail(loggedInName);
+        if (loggedInUser != null) {
+            transactionsService.withdraw(loggedInUser, amount);
+            modelAndView.setViewName("redirect:/user/profile");
+            modelAndView.addObject("message", "Transaction successful");
+            return modelAndView;
+        }
+        if(result.hasErrors()) {
+            modelAndView.setViewName("redirect:/user/profile");
+            modelAndView.addObject("message", "Transaction unsuccessful");
+
+            return modelAndView;
+        }
+        else{
+            modelAndView.setViewName("login");
+
+
+        }
+        return modelAndView;
+    }
+
+
+    @PostMapping("/user/withdrawFromBank")
+    public ModelAndView withdrawMoney(@AuthenticationPrincipal ProBuddyUserDetails user, @ModelAttribute("credit") @Valid ProBuddyWithdrawFromBankDTO transaction,
+                                 BindingResult result, ModelAndView modelAndView) throws InsufficientBalanceException{
+
+        // get the amount to debit
+        double amount = transaction.getAmount();
+
+        String loggedInName = user.getUsername(); //get logged in username
+
+        ProBuddyUser loggedInUser = userService.findUserByEmail(loggedInName);
+        if (loggedInUser != null) {
+            transactionsService.deposit(loggedInUser, amount);
+            modelAndView.setViewName("redirect:/user/profile");
+            modelAndView.addObject("message", "Transaction successful");
+            return modelAndView;
+        }
+        if(result.hasErrors()) {
+            modelAndView.setViewName("redirect:/user/profile");
+            modelAndView.addObject("message", "Transaction unsuccessful");
+
+            return modelAndView;
+        }
+        else{
+            modelAndView.setViewName("login");
+        }
+        return modelAndView;
     }
 }
