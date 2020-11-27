@@ -49,6 +49,7 @@ public class UserDetailsServiceTest {
 
         ProBuddyUser proBuddyUser = new ProBuddyUser();
         proBuddyUser.setEmail("buddy@pmb.com");
+        proBuddyUser.setPassword("password");
         proBuddyUser.setRoles(role);
 
         when(userRepository.findUserByEmail(proBuddyUser.getEmail())).thenReturn(proBuddyUser);

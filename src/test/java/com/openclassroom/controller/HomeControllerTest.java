@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import com.openclassroom.model.ProBuddyUserDetails;
+import com.openclassroom.model.ProBuddyUser;
+
 import com.openclassroom.service.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,15 +63,17 @@ public class HomeControllerTest {
     }
 
     @Test
-    @WithUserDetails("buddy@pmb.com")
+    @WithUserDetails("aw@pmb.com")
     public void testHomeWithLoggedInUser() throws Exception {
+        ProBuddyUser user = new ProBuddyUser();
+        user.setEmail("aw@pmb.com");
 
-        mockMvc.perform(get("user/home"))
+        when(userService.findUserByEmail("aw@pmb.com")).thenReturn(user);
+
+        mockMvc.perform(get("/user/home"))
                 .andExpect(status().is2xxSuccessful());
-
     }
-
     @Test
-    public void testContact() throws Exception{
+    public void testContact() throws Exception {
     }
 }
