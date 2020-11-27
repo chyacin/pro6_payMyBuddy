@@ -1,30 +1,24 @@
-package com.openclassroom.serviceTest;
+package com.openclassroom.service;
 
+import com.openclassroom.model.ProBuddyRole;
+import com.openclassroom.repositories.RoleRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import com.openclassroom.service.RoleServiceImpl;
-import com.openclassroom.model.ProBuddyRole;
-import com.openclassroom.repositories.RoleRepository;
 
-import java.util.Arrays;
-import java.util.List;
-
-import java.util.ArrayList;
-
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class RoleServiceTest {
+public class RoleServiceImplTest {
 
     @InjectMocks
     private RoleServiceImpl roleService;

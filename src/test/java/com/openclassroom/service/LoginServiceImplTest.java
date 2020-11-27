@@ -1,31 +1,30 @@
-package com.openclassroom.serviceTest;
-
+package com.openclassroom.service;
 
 import com.openclassroom.model.ProBuddyLogin;
 import com.openclassroom.model.ProBuddyUser;
-import com.openclassroom.service.LoginServiceImpl;
 import com.openclassroom.repositories.LoginRepository;
-import com.openclassroom.service.UserServiceImpl;
+import com.openclassroom.repositories.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.List;
-import java.util.ArrayList;
-
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
-
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class LoginServiceTest {
+public class LoginServiceImplTest {
 
     @InjectMocks
     LoginServiceImpl loginService;
@@ -36,26 +35,13 @@ public class LoginServiceTest {
     @Mock
     UserServiceImpl userService;
 
+    @Mock
+    UserRepository userRepository;
 
-/*
-    @Override
-    @Transactional
-    public void createLoginHistory(ProBuddyUser user, Timestamp date, Boolean success) {
 
-        ProBuddyUser proBuddyUser = userRepository.findUserByEmail(user.getEmail());
-
-        Timestamp dateTime= Timestamp.from(Instant.now());
-
-        ProBuddyLogin loginSession = new ProBuddyLogin();
-        loginSession.setUser(proBuddyUser);
-        loginSession.setDate(dateTime);
-        loginSession.setSuccess(success);
-
-        loginRepository.save(loginSession);
-    }*/
 
     @Test
-    public void createLoginHistory_returnLoginHistory(){
+    public void createLoginHistory_returnLoginHistory() {
 
         ProBuddyUser proBuddyUser = new ProBuddyUser();
         proBuddyUser.setEmail("buddy@pmb.com");
@@ -66,8 +52,7 @@ public class LoginServiceTest {
         loginSession.setDate(Timestamp.from(Instant.now()));
         loginSession.setSuccess(true);
 
-        when(loginRepository.save(loginSession)).thenReturn(loginSession);
-        when(userService.findUserByEmail("buddy@pmb.com")).thenReturn(proBuddyUser);
+        when(userRepository.findUserByEmail(proBuddyUser.getEmail())).thenReturn(proBuddyUser);
 
         loginService.createLoginHistory(proBuddyUser, Timestamp.from(Instant.now()), true);
 
@@ -75,7 +60,7 @@ public class LoginServiceTest {
     }
 
     @Test
-    public void findAllLogins_returnAllLogins(){
+    public void findAllLogins_returnAllLogins() {
 
         //arrange
         ProBuddyUser proBuddyUser = new ProBuddyUser();
@@ -97,5 +82,6 @@ public class LoginServiceTest {
         assertEquals(1, result.size());
 
     }
+
 
 }

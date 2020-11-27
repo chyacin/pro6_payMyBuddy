@@ -19,7 +19,7 @@ public class ProBuddyUserDTO {
     private String email;
     @Min(message = "must be older or equal to 18", value = 0L)
     @NotNull(message="Please enter your age")
-    private String age;
+    private int age;
     @NotBlank(message="Please enter your phone")
     private String phone;
     @NotBlank(message="Please enter your ID Card number")
@@ -31,7 +31,7 @@ public class ProBuddyUserDTO {
     @NotBlank(message="Please enter your bank account number")
     private String bankAccountNumber;
 
-    public ProBuddyUserDTO(String firstName, String lastName, String address, String email, String age, String phone,
+    public ProBuddyUserDTO(String firstName, String lastName, String address, String email, int age, String phone,
                            String nationalID, String password, String bankName, String bankAccountNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -80,11 +80,11 @@ public class ProBuddyUserDTO {
         this.email = email;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
@@ -135,7 +135,8 @@ public class ProBuddyUserDTO {
         proBuddyUser.setEmail(email);
         proBuddyUser.setAddress(address);
         proBuddyUser.setPassword(password);
-        proBuddyUser.setAge(Integer.parseInt(age.toString()));
+        proBuddyUser.setAge(age);
+      //  proBuddyUser.setAge(Integer.parseInt(age.toString()));
         proBuddyUser.setPhone(phone);
         proBuddyUser.setNationalID(nationalID);
         proBuddyUser.setEnabled(false);

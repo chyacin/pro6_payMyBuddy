@@ -1,4 +1,4 @@
-package com.openclassroom.serviceTest;
+package com.openclassroom.service;
 
 
 import com.openclassroom.model.ProBuddyRole;
@@ -8,14 +8,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import com.openclassroom.repositories.UserRepository;
-import com.openclassroom.service.UserDetailsServiceImpl;
-import com.openclassroom.service.UserServiceImpl;
 import com.openclassroom.model.ProBuddyUser;
 import com.openclassroom.model.ProBuddyUserDetails;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.mockito.Mockito.*;
@@ -36,6 +32,9 @@ public class UserDetailsServiceTest {
     @Mock
     UserServiceImpl userService;
 
+    @Mock
+    LoginService loginService;
+
 
     @Test
     public void loadUserByUserName_returnUserDetails(){
@@ -52,7 +51,7 @@ public class UserDetailsServiceTest {
         proBuddyUser.setEmail("buddy@pmb.com");
         proBuddyUser.setRoles(role);
 
-        when(userService.findUserByEmail(proBuddyUser.getEmail())).thenReturn(proBuddyUser);
+        when(userRepository.findUserByEmail(proBuddyUser.getEmail())).thenReturn(proBuddyUser);
 
         //act
         ProBuddyUserDetails result = userDetailsService.loadUserByUsername(proBuddyUser.getEmail());

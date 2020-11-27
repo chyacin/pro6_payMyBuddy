@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface RoleRepository extends JpaRepository<ProBuddyRole, Integer> {
 
     ProBuddyRole findByName(String name);
+
 }

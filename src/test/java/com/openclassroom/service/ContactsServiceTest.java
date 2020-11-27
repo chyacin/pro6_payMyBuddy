@@ -1,9 +1,7 @@
-package com.openclassroom.serviceTest;
+package com.openclassroom.service;
 
 import com.openclassroom.model.ProBuddyUser;
 import com.openclassroom.model.ProBuddyContacts;
-import com.openclassroom.service.ContactsServiceImpl;
-import com.openclassroom.service.UserServiceImpl;
 import com.openclassroom.repositories.ContactsRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,15 +10,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Arrays;
 import java.util.List;
 
-import javax.validation.constraints.Max;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
