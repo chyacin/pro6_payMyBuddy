@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -23,6 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.Authentication;
+import org.springframework.boot.test.context.SpringBootTest;
 
 
 import static org.junit.Assert.assertEquals;
@@ -31,7 +33,7 @@ import static org.mockito.Mockito.*;
 
 
 @RunWith(SpringRunner.class)
-//@SpringBootTest()
+@SpringBootTest()
 public class HomeControllerTest {
 
     @Autowired
@@ -58,28 +60,14 @@ public class HomeControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(webContext).build();
     }
 
-    @Before
-    public Authentication setupMockAuthentication() {
-
-
-        user = new ProBuddyUserDetails(user.getUsername(), user.getPassword(), user.getAuthorities());
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-     //   loggedUser = authentication.getName(user);
-
-        return authentication;
-    }
-
-   /* @Test
-    @WithMockUser("buddy@pmb.com")
+    @Test
+    @WithUserDetails("buddy@pmb.com")
     public void testHomeWithLoggedInUser() throws Exception {
-        when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(setupMockAuthentication());
-        when(user.getUsername()).thenReturn("buddy@pmb.com");
-        when(userService.findUserByEmail("buddy@pmb.com")).thenReturn();
 
         mockMvc.perform(get("user/home"))
                 .andExpect(status().is2xxSuccessful());
 
-    }*/
+    }
 
     @Test
     public void testContact() throws Exception{
