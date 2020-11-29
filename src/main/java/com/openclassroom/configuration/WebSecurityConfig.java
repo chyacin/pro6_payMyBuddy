@@ -25,11 +25,11 @@ import javax.sql.DataSource;
 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
+    /*@Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
-
+*/
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
