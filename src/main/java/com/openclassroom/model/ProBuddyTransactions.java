@@ -23,6 +23,7 @@ public class ProBuddyTransactions {
     @JoinColumn(name = "sender_user_id")
     private ProBuddyUser sender;
 
+    private String userName;
     private String description;
     private double amount;
     private double fee;
@@ -131,5 +132,9 @@ public class ProBuddyTransactions {
 
     public void setDate(Timestamp date) {
         this.date = date;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

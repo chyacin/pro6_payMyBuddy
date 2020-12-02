@@ -3,9 +3,7 @@ package com.openclassroom.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import com.openclassroom.model.ProBuddyUserDetails;
 import com.openclassroom.model.ProBuddyUser;
 
@@ -17,28 +15,25 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
+
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.Authentication;
+
+
 import org.springframework.boot.test.context.SpringBootTest;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest()
 public class HomeControllerTest {
 
-    @Autowired
+
     private MockMvc mockMvc;
 
     @MockBean
@@ -47,14 +42,8 @@ public class HomeControllerTest {
     @MockBean
     private ProBuddyUserDetails user;
 
-    @Mock
-    ModelAndView modelAndView;
-
     @Autowired
     WebApplicationContext webContext;
-
-    @Autowired
-    org.springframework.security.core.userdetails.User loggedUser;
 
     @Before
     public void setupMockMvc() {
@@ -73,7 +62,18 @@ public class HomeControllerTest {
         mockMvc.perform(get("/user/home"))
                 .andExpect(status().is2xxSuccessful());
     }
+
     @Test
+    @WithUserDetails("aw@pmb.com")
+
     public void testContact() throws Exception {
+        ProBuddyUser user = new ProBuddyUser();
+        user.setEmail("aw@pmb.com");
+
+        when(userService.findUserByEmail("aw@pmb.com")).thenReturn(user);
+
+        mockMvc.perform(get("/user/contact"))
+                .andExpect(status().is2xxSuccessful());
     }
+
 }

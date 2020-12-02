@@ -46,37 +46,34 @@ public class LoginController {
 	@GetMapping(value = "/")
 	public String getUser(@AuthenticationPrincipal ProBuddyUserDetails user) {
 
-	//	String loggedInName = user.getUsername(); //get logged in username
 		System.out.println(user != null);
 		user.getAuthorities().stream().forEach(a -> System.out.println(a.getAuthority()));
 
 		if(user != null && user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))){
-		//if (loggedInUser != null && loggedInUser.equals("ADMIN"))  {
 			return "redirect:/admin/loginHistory";
 		}
 		else{
 			if(user != null && user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("USER"))){
-		//	if(loggedInUser != null && loggedInUser.equals("USER") ){
 				return "home";
 			}
 		}
 		return "login";
 	}
 
-	@GetMapping(value = "/admin")
+	/*@GetMapping(value = "/admin")
 	@RolesAllowed("ADMIN")
 	public ModelAndView getAdmin(ModelAndView modelAndView) {
 
 		modelAndView.setViewName("loginHistory");
 		return modelAndView;
-	}
+	}*/
 
-	// Login form
+	/*// Login form
 	@GetMapping("/login")
 	public ModelAndView login(ModelAndView modelAndView) {
     modelAndView.setViewName("login");
 		return modelAndView;
-	}
+	}*/
 
 	@GetMapping("/admin/loginHistory")
 	@RolesAllowed("ADMIN")

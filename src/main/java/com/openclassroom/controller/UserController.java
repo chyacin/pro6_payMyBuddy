@@ -55,7 +55,7 @@ public class UserController {
             return "register";
         }
         else{
-            userService.createNewUserByRegistration(user);
+          userService.createNewUserByRegistration(user);
             return "login";
         }
     }
@@ -92,6 +92,7 @@ public class UserController {
 
         if(loggedInName.contentEquals(connectedUserEmail) == false){
             ProBuddyUser userToConnectTo = userService.findUserByEmail(connectedUserEmail);
+
             if(userToConnectTo != null){
                 List<ProBuddyContacts> existingConnectedUser = contactsService.findConnectionWithThisUser(loggedInUser, userToConnectTo);
                 System.out.println("Number of existing connection with " + connectedUserEmail + " " + existingConnectedUser.size());
