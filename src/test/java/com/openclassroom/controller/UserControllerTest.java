@@ -122,7 +122,7 @@ public class UserControllerTest {
                 .queryParam("phone", proBuddyUserDTO.getPhone()))
                 .andExpect(view().name("register"))
                 .andExpect(content().string(containsString("Please create a password")));
-              //  .andExpect(status().is2xxSuccessful());
+
 
     }
 

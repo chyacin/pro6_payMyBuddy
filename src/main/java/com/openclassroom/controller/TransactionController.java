@@ -124,7 +124,7 @@ public class TransactionController {
                     dtoList.add(dto);
                 }
                 if (dtoList.isEmpty()) {
-                    dtoList.add(new ProBuddyTransactionDTO(0.00, "Account is empty"));
+                    dtoList.add(new ProBuddyTransactionDTO(0.00, " "));
                 }
                 modelAndView.setViewName("transaction");
                 modelAndView.addObject("transferForm", new ProBuddyTransferFormDTO());
@@ -182,9 +182,10 @@ public class TransactionController {
 
     @PostMapping("/user/depositToBank")
     public ModelAndView depositMoney(@AuthenticationPrincipal ProBuddyUserDetails user, @ModelAttribute("debit")
-                                     @Valid ProBuddyDepositToBankDTO transaction,
+                                     @Valid ProBuddyDepositToBankDTO transaction, ProBuddyTransferFormDTO transferFormDTO,
                                       BindingResult result, ModelAndView modelAndView){
 
+        ProBuddyUser connectedUser = userService.findUserByEmail(transferFormDTO.getConnectedUserEmail());
         // get the amount to debit
         double amount = transaction.getAmount();
 
@@ -197,6 +198,28 @@ public class TransactionController {
             modelAndView.addObject("message", "Transaction successful");
             return modelAndView;
         }
+        List<ProBuddyTransactions> transactionsList = transactionsService.findAll();
+        List<ProBuddyTransactionDTO> dtoList = new ArrayList<>();
+
+        for (ProBuddyTransactions proBuddytransactions : transactionsList) {
+            ProBuddyTransactionDTO dto = new ProBuddyTransactionDTO();
+            dto.setSendingUserID(proBuddytransactions.getSender().getId());
+            dto.setReceivingUserID(proBuddytransactions.getSender().getId());
+            dto.setUserName(proBuddytransactions.getSender().getFirstName()
+                    +" "+proBuddytransactions.getSender().getLastName());
+            dto.setDescription(proBuddytransactions.getDescription());
+            dto.setAmount(proBuddytransactions.getAmount());
+            dtoList.add(dto);
+        }
+        modelAndView.addObject("transferForm", new ProBuddyTransferFormDTO());
+        modelAndView.addObject("dtoList", dtoList);
+        modelAndView.addObject("dto", new ProBuddyTransactionDTO());
+
+        List<ProBuddyUser> connectedUserList = contactsService.findConnectedUserByConnectorUser(connectedUser);
+
+        modelAndView.addObject("connectedUserList", connectedUserList);
+
+
         if(result.hasErrors()) {
             modelAndView.setViewName("redirect:/user/profile");
             modelAndView.addObject("message", "Transaction unsuccessful");
@@ -210,6 +233,40 @@ public class TransactionController {
         }
         return modelAndView;
     }
+
+   /* @PostMapping("/user/depositToBank")
+    public ModelAndView depositMoney(@AuthenticationPrincipal ProBuddyUserDetails user, @ModelAttribute("debit")
+    @Valid ProBuddyDepositToBankDTO transaction,
+                                     BindingResult result, ModelAndView modelAndView){
+
+
+        ProBuddyUser connectedBuddy = userService.findUserByEmail()
+        // get the amount to debit
+        double amount = transaction.getAmount();
+
+        String loggedInName = user.getUsername(); //get logged in username
+
+        ProBuddyUser loggedInUser = userService.findUserByEmail(loggedInName);
+        if (loggedInUser != null) {
+            transactionsService.withdraw(loggedInUser, amount);
+            modelAndView.setViewName("redirect:/user/profile");
+            modelAndView.addObject("message", "Transaction successful");
+            return modelAndView;
+        }
+
+        if(result.hasErrors()) {
+            modelAndView.setViewName("redirect:/user/profile");
+            modelAndView.addObject("message", "Transaction unsuccessful");
+
+            return modelAndView;
+        }
+        else{
+            modelAndView.setViewName("login");
+
+
+        }
+        return modelAndView;
+    }*/
 
 
     @PostMapping("/user/withdrawFromBank")
