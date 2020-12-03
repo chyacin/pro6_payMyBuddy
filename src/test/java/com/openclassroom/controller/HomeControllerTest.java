@@ -1,8 +1,6 @@
 package com.openclassroom.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import com.openclassroom.model.ProBuddyUserDetails;
 import com.openclassroom.model.ProBuddyUser;
@@ -11,7 +9,7 @@ import com.openclassroom.service.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -65,7 +63,6 @@ public class HomeControllerTest {
 
     @Test
     @WithUserDetails("aw@pmb.com")
-
     public void testContact() throws Exception {
         ProBuddyUser user = new ProBuddyUser();
         user.setEmail("aw@pmb.com");
@@ -73,6 +70,7 @@ public class HomeControllerTest {
         when(userService.findUserByEmail("aw@pmb.com")).thenReturn(user);
 
         mockMvc.perform(get("/user/contact"))
+                .andExpect(view().name("contact"))
                 .andExpect(status().is2xxSuccessful());
     }
 

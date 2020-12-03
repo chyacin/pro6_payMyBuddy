@@ -85,6 +85,8 @@ public class TransactionsServiceImpl implements TransactionsService {
     @Override
     public void withdraw(ProBuddyUser user, double amount)
     {
+
+
         // Get the logged in user
         // Get his ProBuddyAccount object
         ProBuddyAccount account = accountService.findAccountByUserEmail(user.getEmail());

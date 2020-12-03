@@ -60,20 +60,20 @@ public class LoginController {
 		return "login";
 	}
 
-	/*@GetMapping(value = "/admin")
+	@GetMapping(value = "/admin")
 	@RolesAllowed("ADMIN")
 	public ModelAndView getAdmin(ModelAndView modelAndView) {
 
 		modelAndView.setViewName("loginHistory");
 		return modelAndView;
-	}*/
+	}
 
-	/*// Login form
+	// Login form
 	@GetMapping("/login")
 	public ModelAndView login(ModelAndView modelAndView) {
     modelAndView.setViewName("login");
 		return modelAndView;
-	}*/
+	}
 
 	@GetMapping("/admin/loginHistory")
 	@RolesAllowed("ADMIN")

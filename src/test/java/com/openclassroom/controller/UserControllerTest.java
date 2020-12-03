@@ -21,6 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -61,8 +62,6 @@ public class UserControllerTest {
     @Test
     public void testPostRegisterNewProBuddyUser()throws Exception {
 
-        ProBuddyUser proBuddyUser = new ProBuddyUser();
-
         ProBuddyUserDTO proBuddyUserDTO = new ProBuddyUserDTO();
         proBuddyUserDTO.setEmail("buddy@pmb.com");
         proBuddyUserDTO.setLastName("Wall");
@@ -73,13 +72,90 @@ public class UserControllerTest {
         proBuddyUserDTO.setBankName("Bank of France");
         proBuddyUserDTO.setBankAccountNumber("Account55");
         proBuddyUserDTO.setNationalID("nationalID");
+        proBuddyUserDTO.setPhone("1-800-701-5858");
 
 
         when(userService.findUserByEmail(proBuddyUserDTO.getEmail())).thenReturn(null);
         mockMvc.perform(post("/register")
-                .requestAttr("user",  proBuddyUserDTO))
-                .andExpect(view().name("register"))
+                .queryParam("email", proBuddyUserDTO.getEmail())
+                .queryParam("lastName", proBuddyUserDTO.getLastName())
+                .queryParam("firstName", proBuddyUserDTO.getFirstName())
+                .queryParam("password", proBuddyUserDTO.getPassword())
+                .queryParam("address", proBuddyUserDTO.getAddress())
+                .queryParam("age", String.valueOf(proBuddyUserDTO.getAge()))
+                .queryParam("bankName", proBuddyUserDTO.getBankName())
+                .queryParam("bankAccountNumber", proBuddyUserDTO.getBankAccountNumber())
+                .queryParam("nationalID", proBuddyUserDTO.getNationalID())
+                .queryParam("phone", proBuddyUserDTO.getPhone()))
+                .andExpect(view().name("login"))
                 .andExpect(status().is2xxSuccessful());
+
+    }
+
+    @Test
+    public void testPostRegisterInCompleteRegister()throws Exception {
+
+        ProBuddyUserDTO proBuddyUserDTO = new ProBuddyUserDTO();
+        proBuddyUserDTO.setEmail("buddy@pmb.com");
+        proBuddyUserDTO.setLastName("Wall");
+        proBuddyUserDTO.setFirstName("John");
+        proBuddyUserDTO.setPassword("");
+        proBuddyUserDTO.setAddress("55 Fourth Street");
+        proBuddyUserDTO.setAge(25);
+        proBuddyUserDTO.setBankName("Bank of France");
+        proBuddyUserDTO.setBankAccountNumber("Account55");
+        proBuddyUserDTO.setNationalID("nationalID");
+        proBuddyUserDTO.setPhone("1-800-701-5858");
+
+
+        when(userService.findUserByEmail(proBuddyUserDTO.getEmail())).thenReturn(null);
+        mockMvc.perform(post("/register")
+                .queryParam("email", proBuddyUserDTO.getEmail())
+                .queryParam("lastName", proBuddyUserDTO.getLastName())
+                .queryParam("firstName", proBuddyUserDTO.getFirstName())
+                .queryParam("password", proBuddyUserDTO.getPassword())
+                .queryParam("address", proBuddyUserDTO.getAddress())
+                .queryParam("age", String.valueOf(proBuddyUserDTO.getAge()))
+                .queryParam("bankName", proBuddyUserDTO.getBankName())
+                .queryParam("bankAccountNumber", proBuddyUserDTO.getBankAccountNumber())
+                .queryParam("nationalID", proBuddyUserDTO.getNationalID())
+                .queryParam("phone", proBuddyUserDTO.getPhone()))
+                .andExpect(view().name("register"))
+                .andExpect(content().string(containsString("Please create a password")));
+              //  .andExpect(status().is2xxSuccessful());
+
+    }
+
+    @Test
+    public void testPostRegisterExistingProBuddyUserEmail()throws Exception {
+
+        ProBuddyUserDTO proBuddyUserDTO = new ProBuddyUserDTO();
+        proBuddyUserDTO.setEmail("aw@pmb.com");
+        proBuddyUserDTO.setLastName("Wall");
+        proBuddyUserDTO.setFirstName("John");
+        proBuddyUserDTO.setPassword("password");
+        proBuddyUserDTO.setAddress("55 Fourth Street");
+        proBuddyUserDTO.setAge(25);
+        proBuddyUserDTO.setBankName("Bank of France");
+        proBuddyUserDTO.setBankAccountNumber("Account55");
+        proBuddyUserDTO.setNationalID("nationalID");
+        proBuddyUserDTO.setPhone("1-800-701-5858");
+
+
+        when(userService.findUserByEmail(proBuddyUserDTO.getEmail())).thenReturn(proBuddyUserDTO.createProBuddyUser());
+        mockMvc.perform(post("/register")
+                .queryParam("email", proBuddyUserDTO.getEmail())
+                .queryParam("lastName", proBuddyUserDTO.getLastName())
+                .queryParam("firstName", proBuddyUserDTO.getFirstName())
+                .queryParam("password", proBuddyUserDTO.getPassword())
+                .queryParam("address", proBuddyUserDTO.getAddress())
+                .queryParam("age", String.valueOf(proBuddyUserDTO.getAge()))
+                .queryParam("bankName", proBuddyUserDTO.getBankName())
+                .queryParam("bankAccountNumber", proBuddyUserDTO.getBankAccountNumber())
+                .queryParam("nationalID", proBuddyUserDTO.getNationalID())
+                .queryParam("phone", proBuddyUserDTO.getPhone()))
+                .andExpect(content().string(containsString("The email address that you entered is already taken")));
+
     }
 
     @Test
