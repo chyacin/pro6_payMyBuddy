@@ -25,10 +25,9 @@ import javax.sql.DataSource;
 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserDetailsServiceImpl();
-    }
+    @Autowired
+    public UserDetailsServiceImpl userDetailsService;
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -38,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
