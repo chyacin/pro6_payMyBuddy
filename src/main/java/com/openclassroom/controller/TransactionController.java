@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -43,22 +44,29 @@ public class TransactionController {
 
     @GetMapping("/user/makeTransfer")
     public ModelAndView makeTransfer(@AuthenticationPrincipal ProBuddyUserDetails user, ProBuddyTransferFormDTO transferFormDTO,
-                                     ModelAndView modelAndView) {
-
+                                     ModelAndView modelAndView, BindingResult result) {
 
         String loggedInName = user.getUsername(); //get logged in username
 
         ProBuddyUser loggedInUser = userService.findUserByEmail(loggedInName);
         if (loggedInUser != null) {
             List<ProBuddyUser> connectedUserList = contactsService.findConnectedUserByConnectorUser(loggedInUser);
-            List<ProBuddyTransactions> transactionsList = transactionsService.findAll();
+            List<ProBuddyTransactions> transactionsList = transactionsService.findAllByAccount(loggedInUser.getAccount());
             List<ProBuddyTransactionDTO> dtoList = new ArrayList<>();
 
             for (ProBuddyTransactions proBuddytransactions : transactionsList) {
+
+                // Create a ProBuddyUser called Bank, and ProbuddyAccount for Bank-- to do next
                 ProBuddyTransactionDTO dto = new ProBuddyTransactionDTO();
-                dto.setSendingUserID(proBuddytransactions.getSender().getId());
-                dto.setUserName(proBuddytransactions.getReceiver().getFirstName()
-                        +" "+proBuddytransactions.getReceiver().getLastName());
+                if(proBuddytransactions.getSender() != null) {
+                    dto.setSendingUserID(proBuddytransactions.getSender().getId());
+                }
+                if(proBuddytransactions.getReceiver() != null) {
+                    dto.setUserName(proBuddytransactions.getReceiver().getFirstName()
+                            + " " + proBuddytransactions.getReceiver().getLastName());
+                }else{
+                    dto.setUserName("Bank");
+                }
                 dto.setDescription(proBuddytransactions.getDescription());
                 dto.setAmount(proBuddytransactions.getAmount());
                 dto.setFee(proBuddytransactions.getFee());
@@ -67,6 +75,7 @@ public class TransactionController {
             if(dtoList.isEmpty()) {
                 dtoList.add(new ProBuddyTransactionDTO(0.00, "Account is empty"));
             }
+            Collections.reverse(dtoList);
             modelAndView.setViewName("transaction");
             modelAndView.addObject("connectedUserList", connectedUserList);
             modelAndView.addObject("transferForm", new ProBuddyTransferFormDTO());
@@ -82,12 +91,19 @@ public class TransactionController {
 
     @PostMapping("/user/makeTransfer")
     public ModelAndView makeTransfer(@AuthenticationPrincipal ProBuddyUserDetails user,
-                                     @ModelAttribute("transferForm") ProBuddyTransferFormDTO transferFormDTO,
+                                     @ModelAttribute("transferForm") @Valid ProBuddyTransferFormDTO transferFormDTO,
                                      BindingResult result, ModelAndView modelAndView){
+            // detect if empty
+        if(result.hasErrors()) {
+            modelAndView.setViewName("redirect:/user/makeTransfer");
+            return modelAndView;
+        }
             ProBuddyUser connectedBuddy = userService.findUserByEmail(transferFormDTO.getConnectedUserEmail());
-            System.out.println("The receiver is " + connectedBuddy.getEmail());
-            System.out.println(connectedBuddy.getEmail());
-            if (connectedBuddy == null) {
+            /*
+           System.out.println("The receiver is " + connectedBuddy.getEmail());
+           System.out.println(connectedBuddy.getEmail());
+           */
+        if (connectedBuddy == null ) {
                 modelAndView.setViewName("transaction");
                 result.reject("User with email" + transferFormDTO.getConnectedUserEmail() + "does not exist");
                 return modelAndView;
@@ -111,13 +127,17 @@ public class TransactionController {
                     System.out.println("Insufficient balance");
                     e.printStackTrace();
                 }
-                List<ProBuddyTransactions> transactionsList = transactionsService.findAll();
+                List<ProBuddyTransactions> transactionsList = transactionsService.findAllByAccount(loggedInUser.getAccount());
                 List<ProBuddyTransactionDTO> dtoList = new ArrayList<>();
 
                 for (ProBuddyTransactions proBuddytransactions : transactionsList) {
                     ProBuddyTransactionDTO dto = new ProBuddyTransactionDTO();
-                    dto.setSendingUserID(proBuddytransactions.getSender().getId());
-                    dto.setReceivingUserID(proBuddytransactions.getReceiver().getId());
+                    if(proBuddytransactions.getSender() != null) {
+                        dto.setSendingUserID(proBuddytransactions.getSender().getId());
+                    }
+                    if(proBuddytransactions.getReceiver() != null) {
+                        dto.setReceivingUserID(proBuddytransactions.getReceiver().getId());
+                    }
                     dto.setDescription(proBuddytransactions.getDescription());
                     dto.setAmount(proBuddytransactions.getAmount());
                     dto.setFee(proBuddytransactions.getFee());
@@ -126,6 +146,7 @@ public class TransactionController {
                 if (dtoList.isEmpty()) {
                     dtoList.add(new ProBuddyTransactionDTO(0.00, " "));
                 }
+                Collections.reverse(dtoList);
                 modelAndView.setViewName("transaction");
                 modelAndView.addObject("transferForm", new ProBuddyTransferFormDTO());
                 modelAndView.addObject("dtoList", dtoList);
@@ -180,12 +201,13 @@ public class TransactionController {
 
 
 
+
     @PostMapping("/user/depositToBank")
     public ModelAndView depositMoney(@AuthenticationPrincipal ProBuddyUserDetails user, @ModelAttribute("debit")
-                                     @Valid ProBuddyDepositToBankDTO transaction, ProBuddyTransferFormDTO transferFormDTO,
-                                      BindingResult result, ModelAndView modelAndView){
+    @Valid ProBuddyDepositToBankDTO transaction,
+                                     BindingResult result, ModelAndView modelAndView){
 
-        ProBuddyUser connectedUser = userService.findUserByEmail(transferFormDTO.getConnectedUserEmail());
+
         // get the amount to debit
         double amount = transaction.getAmount();
 
@@ -198,27 +220,6 @@ public class TransactionController {
             modelAndView.addObject("message", "Transaction successful");
             return modelAndView;
         }
-        List<ProBuddyTransactions> transactionsList = transactionsService.findAll();
-        List<ProBuddyTransactionDTO> dtoList = new ArrayList<>();
-
-        for (ProBuddyTransactions proBuddytransactions : transactionsList) {
-            ProBuddyTransactionDTO dto = new ProBuddyTransactionDTO();
-            dto.setSendingUserID(proBuddytransactions.getSender().getId());
-            dto.setReceivingUserID(proBuddytransactions.getSender().getId());
-            dto.setUserName(proBuddytransactions.getSender().getFirstName()
-                    +" "+proBuddytransactions.getSender().getLastName());
-            dto.setDescription(proBuddytransactions.getDescription());
-            dto.setAmount(proBuddytransactions.getAmount());
-            dtoList.add(dto);
-        }
-        modelAndView.addObject("transferForm", new ProBuddyTransferFormDTO());
-        modelAndView.addObject("dtoList", dtoList);
-        modelAndView.addObject("dto", new ProBuddyTransactionDTO());
-
-        List<ProBuddyUser> connectedUserList = contactsService.findConnectedUserByConnectorUser(connectedUser);
-
-        modelAndView.addObject("connectedUserList", connectedUserList);
-
 
         if(result.hasErrors()) {
             modelAndView.setViewName("redirect:/user/profile");
@@ -233,40 +234,6 @@ public class TransactionController {
         }
         return modelAndView;
     }
-
-   /* @PostMapping("/user/depositToBank")
-    public ModelAndView depositMoney(@AuthenticationPrincipal ProBuddyUserDetails user, @ModelAttribute("debit")
-    @Valid ProBuddyDepositToBankDTO transaction,
-                                     BindingResult result, ModelAndView modelAndView){
-
-
-        ProBuddyUser connectedBuddy = userService.findUserByEmail()
-        // get the amount to debit
-        double amount = transaction.getAmount();
-
-        String loggedInName = user.getUsername(); //get logged in username
-
-        ProBuddyUser loggedInUser = userService.findUserByEmail(loggedInName);
-        if (loggedInUser != null) {
-            transactionsService.withdraw(loggedInUser, amount);
-            modelAndView.setViewName("redirect:/user/profile");
-            modelAndView.addObject("message", "Transaction successful");
-            return modelAndView;
-        }
-
-        if(result.hasErrors()) {
-            modelAndView.setViewName("redirect:/user/profile");
-            modelAndView.addObject("message", "Transaction unsuccessful");
-
-            return modelAndView;
-        }
-        else{
-            modelAndView.setViewName("login");
-
-
-        }
-        return modelAndView;
-    }*/
 
 
     @PostMapping("/user/withdrawFromBank")

@@ -1,9 +1,13 @@
 package com.openclassroom.modelDTO;
 
+import javax.validation.constraints.NotBlank;
+
 public class ProBuddyTransferFormDTO {
 
+    @NotBlank(message="Please enter an email address")
     String connectedUserEmail;
     double amount;
+    @NotBlank(message="Please enter a description")
     String description;
 
     public ProBuddyTransferFormDTO() {

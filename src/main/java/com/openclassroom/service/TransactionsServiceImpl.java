@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionsServiceImpl implements TransactionsService {
@@ -83,9 +85,19 @@ public class TransactionsServiceImpl implements TransactionsService {
     }
 
     @Override
+    public List<ProBuddyTransactions> findAllByAccount(ProBuddyAccount account) {
+
+        //List<ProBuddyTransactions> buddyTransactionsList = new ArrayList<>();
+        //buddyTransactionsList.addAll(transactionsRepository.findAllBySenderAccount(account));
+        //buddyTransactionsList.addAll(transactionsRepository.findAllByReceiverAccount(account));
+
+        return transactionsRepository.findAllBySenderAccountOrReceiverAccount(account, account);
+
+    }
+
+    @Override
     public void withdraw(ProBuddyUser user, double amount)
     {
-
 
         // Get the logged in user
         // Get his ProBuddyAccount object
@@ -96,6 +108,21 @@ public class TransactionsServiceImpl implements TransactionsService {
         // Call account service updateAccount method to save it
         //accountService.updateAccount(account);
         accountRepository.save(account);
+
+        Timestamp date= Timestamp.from(Instant.now());
+
+        ProBuddyTransactions createTransaction = new ProBuddyTransactions();
+        createTransaction.setReceiver(account.getUser());
+        createTransaction.setSender(null);
+        createTransaction.setFee(0.0);
+        createTransaction.setSenderAccount(null);
+        createTransaction.setReceiverAccount(account);
+        createTransaction.setDescription("Withdrawal from bank to user account");
+        createTransaction.setAmount(amount);
+        createTransaction.setDate(date);
+
+        transactionsRepository.save(createTransaction);
+
 
     }
 
@@ -113,6 +140,21 @@ public class TransactionsServiceImpl implements TransactionsService {
         // Call account service updateAccount method to save it
         //accountService.updateAccount(account);
         accountRepository.save(account);
+
+        Timestamp date= Timestamp.from(Instant.now());
+
+        ProBuddyTransactions createTransaction = new ProBuddyTransactions();
+        createTransaction.setReceiver(null);
+        createTransaction.setSender(account.getUser());
+        createTransaction.setFee(0.0);
+        createTransaction.setSenderAccount(account);
+        createTransaction.setReceiverAccount(null);
+        createTransaction.setDescription("Deposit to bank from user account");
+        createTransaction.setAmount(amount);
+        createTransaction.setDate(date);
+
+        transactionsRepository.save(createTransaction);
+
     }
 
 }

@@ -4,6 +4,7 @@ import com.openclassroom.model.ProBuddyAccount;
 import com.openclassroom.model.ProBuddyContacts;
 import com.openclassroom.model.ProBuddyUser;
 import com.openclassroom.model.ProBuddyUserDetails;
+import com.openclassroom.modelDTO.ProBuddyConnectedUserDTO;
 import com.openclassroom.modelDTO.ProBuddyUserDTO;
 import com.openclassroom.service.ContactsService;
 import com.openclassroom.service.UserService;
@@ -67,6 +68,8 @@ public class UserController {
 
 
         ProBuddyUser loggedInUser = userService.findUserByEmail(loggedInName);
+        modelAndView.addObject("errorMessage", "");
+        modelAndView.addObject("connectedUserEmail", new ProBuddyConnectedUserDTO());
 
         if(loggedInName != null){
             modelAndView.setViewName("addUserConnection");
@@ -81,30 +84,44 @@ public class UserController {
 
     @PostMapping("/user/addUserConnection")
     public ModelAndView createAddUserConnection (@AuthenticationPrincipal  ProBuddyUserDetails user,
-                                                 @RequestParam String connectedUserEmail, ModelAndView modelAndView,
+                                                 @ModelAttribute("connectedUserEmail") ProBuddyConnectedUserDTO connectedUserEmail, ModelAndView modelAndView,
                                                  RedirectView redirectView, BindingResult result){
 
+        if(result.hasErrors()) {
+            modelAndView.setViewName("addUserConnection");
+            return modelAndView;
+        }
         String loggedInName = user.getUsername();
 
         //Get the ProBuddyUser object of the person logged in
 
         ProBuddyUser loggedInUser = userService.findUserByEmail(loggedInName);
 
-        if(loggedInName.contentEquals(connectedUserEmail) == false){
-            ProBuddyUser userToConnectTo = userService.findUserByEmail(connectedUserEmail);
+        if(loggedInName.contentEquals(connectedUserEmail.getConnectionEmail()) == false){
+            ProBuddyUser userToConnectTo = userService.findUserByEmail(connectedUserEmail.getConnectionEmail());
 
             if(userToConnectTo != null){
                 List<ProBuddyContacts> existingConnectedUser = contactsService.findConnectionWithThisUser(loggedInUser, userToConnectTo);
                 System.out.println("Number of existing connection with " + connectedUserEmail + " " + existingConnectedUser.size());
                 if(existingConnectedUser.size() == 0) {
-                    contactsService.createContactsConnection(loggedInUser, connectedUserEmail);
+                    contactsService.createContactsConnection(loggedInUser, connectedUserEmail.getConnectionEmail());
+
+                   redirectView.setUrl("/user/makeTransfer");
+                   modelAndView.setView(redirectView);
                 }
-                redirectView.setUrl("/user/makeTransfer");
-                modelAndView.setView(redirectView);
+                else{
+                    System.out.println("Already connected with this user");
+                    modelAndView.addObject("errorMessage", "Already connected with this user");
+
+                    modelAndView.setViewName("addUserConnection");
+                    return modelAndView;
+                }
+
             }
             else {
-                result.rejectValue("This email address doesn't exist", "Please enter a valid email address");
-                modelAndView.setViewName("addConnection");
+                result.rejectValue(null, "Please enter a valid email address");
+                modelAndView.addObject("errorMessage", "This email address doesn't exist");
+                modelAndView.setViewName("addUserConnection");
             }
         }
         else {
