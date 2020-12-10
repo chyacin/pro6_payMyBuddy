@@ -1,4 +1,4 @@
-package com.openclassroom.serviceTest;
+package com.openclassroom.service;
 import com.openclassroom.model.ProBuddyAccount;
 import com.openclassroom.model.ProBuddyUser;
 import com.openclassroom.repositories.AccountRepository;

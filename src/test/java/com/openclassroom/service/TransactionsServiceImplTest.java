@@ -108,7 +108,7 @@ public class TransactionsServiceImplTest {
 
         //arrange
         ProBuddyUser proBuddyUser = new ProBuddyUser();
-        proBuddyUser.setEmail("buddy@@pmb.com");
+        proBuddyUser.setEmail("buddy@pmb.com");
 
         ProBuddyTransactions findAllTransactions = new ProBuddyTransactions();
         findAllTransactions.setSender(proBuddyUser);
@@ -128,7 +128,7 @@ public class TransactionsServiceImplTest {
 
 
     @Test
-    public void withdrawCash_returnWithdraw(){
+    public void withdrawCash_returnWithdraw() throws InsufficientBalanceException{
 
         //arrange
         double  amount = 20.00;

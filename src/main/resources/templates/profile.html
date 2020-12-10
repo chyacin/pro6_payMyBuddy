@@ -59,7 +59,7 @@
 </nav>
 <div class="container">
 
-    <label th:text="${message}"/>
+    <label th:text="${errorMessage}"/>
     <div class="row">
 
         <h2 class="col-sm-8">User profile</h2>
@@ -85,6 +85,7 @@
         <div class="row border" style="margin-bottom: 30px;">
             <div class="col-sm-3 boxItem">
                 <input class="form-control" placeholder="amount" th:field="${credit.amount}">
+                <p th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></p>
             </div>
             <div class="col-sm-5 text-right boxItem boxItemLast">
                 <button type="submit" class="btn btn-success btn-xl">Deposit</button>

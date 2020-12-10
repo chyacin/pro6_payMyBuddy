@@ -18,5 +18,5 @@ public interface TransactionsService {
 
     public void deposit(ProBuddyUser user, double amount) throws InsufficientBalanceException;
 
-    public void withdraw(ProBuddyUser user, double amount);
+    public void withdraw(ProBuddyUser user, double amount) throws InsufficientBalanceException;
 }

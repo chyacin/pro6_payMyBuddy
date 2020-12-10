@@ -96,11 +96,4 @@ public class UserServiceImpl implements UserService{
         return savedUser;
     }
 
-   /* private double generateRandomAccountBalance(){
-        return Math.round(Math.random() * 10000);
-        //String initialAmount = decimalFormat.format(Math.random() * 10000);
-        //return Double.parseDouble(initialAmount);
-    }*/
-
-
 }

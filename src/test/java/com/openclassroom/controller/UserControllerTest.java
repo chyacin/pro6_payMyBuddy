@@ -2,6 +2,7 @@ package com.openclassroom.controller;
 
 import com.openclassroom.model.ProBuddyAccount;
 import com.openclassroom.model.ProBuddyContacts;
+import com.openclassroom.model.ProBuddyRole;
 import com.openclassroom.model.ProBuddyUser;
 import com.openclassroom.modelDTO.ProBuddyUserDTO;
 import com.openclassroom.service.ContactsService;
@@ -19,7 +20,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.Mockito.when;
@@ -197,5 +200,17 @@ public class UserControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlTemplate("/user/makeTransfer"));
     }
+
+    @Test
+    @WithUserDetails("aw@pmb.com")
+    public void testAccessDenied() throws Exception{
+
+        mockMvc.perform(get("/403"))
+                .andExpect(view().name("accessDenied"))
+                .andExpect(status().is2xxSuccessful());
+
+
+    }
+
 
 }

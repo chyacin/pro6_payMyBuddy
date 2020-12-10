@@ -72,7 +72,7 @@ public class TransactionsServiceImpl implements TransactionsService {
         createTransaction.setSenderAccount(senderAccount);
         createTransaction.setReceiverAccount(receiverAccount);
         createTransaction.setDescription(description);
-        createTransaction.setAmount(amount);
+        createTransaction.setAmount(totalCharge);
         createTransaction.setDate(date);
 
         transactionsRepository.save(createTransaction);
@@ -96,12 +96,15 @@ public class TransactionsServiceImpl implements TransactionsService {
     }
 
     @Override
-    public void withdraw(ProBuddyUser user, double amount)
+    public void withdraw(ProBuddyUser user, double amount) throws InsufficientBalanceException
     {
 
         // Get the logged in user
         // Get his ProBuddyAccount object
         ProBuddyAccount account = accountService.findAccountByUserEmail(user.getEmail());
+        if((account.getBalance() - amount) < 0){
+            throw new InsufficientBalanceException("You have insufficient funds for this transaction");
+        }
 
         // credit the ProBuddyAccount with the given amount
         account.setBalance(account.getBalance() + amount);

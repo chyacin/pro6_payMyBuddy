@@ -10,16 +10,16 @@ public class ProBuddyTransactions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sender_account_id")
     private ProBuddyAccount senderAccount;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "receiver_account_id")
     private ProBuddyAccount receiverAccount;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "receiver_user_id")
     private ProBuddyUser receiver;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sender_user_id")
     private ProBuddyUser sender;
 

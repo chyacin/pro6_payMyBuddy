@@ -68,12 +68,12 @@ public class TransactionController {
                     dto.setUserName("Bank");
                 }
                 dto.setDescription(proBuddytransactions.getDescription());
-                dto.setAmount(proBuddytransactions.getAmount());
+                dto.setAmount(proBuddytransactions.getAmount() );
                 dto.setFee(proBuddytransactions.getFee());
                 dtoList.add(dto);
             }
             if(dtoList.isEmpty()) {
-                dtoList.add(new ProBuddyTransactionDTO(0.00, "Account is empty"));
+                dtoList.add(new ProBuddyTransactionDTO(0.00, ""));
             }
             Collections.reverse(dtoList);
             modelAndView.setViewName("transaction");
@@ -147,14 +147,14 @@ public class TransactionController {
                     dtoList.add(new ProBuddyTransactionDTO(0.00, " "));
                 }
                 Collections.reverse(dtoList);
-                modelAndView.setViewName("transaction");
+                modelAndView.setViewName("redirect:/user/makeTransfer");
                 modelAndView.addObject("transferForm", new ProBuddyTransferFormDTO());
                 modelAndView.addObject("dtoList", dtoList);
                 modelAndView.addObject("dto", new ProBuddyTransactionDTO());
 
                 List<ProBuddyUser> connectedUserList = contactsService.findConnectedUserByConnectorUser(connectedBuddy);
 
-                modelAndView.setViewName("transaction");
+                modelAndView.setViewName("redirect:/user/makeTransfer");
                 modelAndView.addObject("connectedUserList", connectedUserList);
             } else {
                 modelAndView.setViewName("transaction");
@@ -205,7 +205,7 @@ public class TransactionController {
     @PostMapping("/user/depositToBank")
     public ModelAndView depositMoney(@AuthenticationPrincipal ProBuddyUserDetails user, @ModelAttribute("debit")
     @Valid ProBuddyDepositToBankDTO transaction,
-                                     BindingResult result, ModelAndView modelAndView){
+                                     BindingResult result, ModelAndView modelAndView) throws InsufficientBalanceException{
 
 
         // get the amount to debit
@@ -253,9 +253,9 @@ public class TransactionController {
             return modelAndView;
         }
         if(result.hasErrors()) {
+            result.rejectValue(null, "Transaction unsuccessful");
+            modelAndView.addObject("errorMessage", "Transaction unsuccessful, You have insufficient funds for this transaction");
             modelAndView.setViewName("redirect:/user/profile");
-            modelAndView.addObject("message", "Transaction unsuccessful");
-
             return modelAndView;
         }
         else{
