@@ -5,6 +5,7 @@ import com.openclassroom.model.ProBuddyTransactions;
 import com.openclassroom.model.ProBuddyUser;
 import com.openclassroom.modelDTO.ProBuddyDepositToBankDTO;
 import com.openclassroom.modelDTO.ProBuddyProfileDTO;
+import com.openclassroom.modelDTO.ProBuddyTransactionDTO;
 import com.openclassroom.modelDTO.ProBuddyTransferFormDTO;
 import com.openclassroom.service.AccountServiceImpl;
 import com.openclassroom.service.ContactsService;
@@ -464,7 +465,7 @@ public class TransactionControllerTest {
         mockMvc.perform(post("/user/withdrawFromBank")
                 .requestAttr("credit", transaction))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlTemplate("/user/profile?message=Transaction+successful"));
+                .andExpect(redirectedUrlTemplate("/user/profile?errorMessage=Transaction+successful"));
     }
 
         @Test
@@ -495,4 +496,6 @@ public class TransactionControllerTest {
                     .andExpect(status().is2xxSuccessful());
 
     }
+
+
 }
