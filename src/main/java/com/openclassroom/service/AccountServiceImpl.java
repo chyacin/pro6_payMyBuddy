@@ -13,13 +13,6 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    /* Each javadoc needs to have this:
-            1. Description of the method: what it does in layman's terms
-            2. Parameters: name & description of each parameter in layman's terms
-            3. Return: type & description of return value in layman's terms
-    You only need javadoc for controller & service methods
-    Nothing else needs it*/
-
     /**
      * The service method which saves a probuddy account to the database
      * @param account the account to be saved
