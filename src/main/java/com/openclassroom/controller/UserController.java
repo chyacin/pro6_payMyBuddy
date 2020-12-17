@@ -35,7 +35,11 @@ public class UserController {
     private ContactsService contactsService;
 
 
-
+    /**
+     * The controller method that routes to the registration page where new users can register
+     * @param modelAndView this is a request scoped object injected for us by spring and it's stores attributes.
+     * @return ModelAndView which contains the stored attributes and object we pass to the web page
+     */
     @GetMapping("/register")
     public ModelAndView registerProBuddy(ModelAndView modelAndView){
 
@@ -44,6 +48,12 @@ public class UserController {
         return modelAndView;
     }
 
+    /**
+     * The controller method which receives the registration form values and creates a user from it
+     * @param user this is a data transfer object which contains the user's details
+     * @param result the validation status of each input field in the form
+     * @return String the next url to route to
+     */
     @PostMapping("/register")
     public String registerNewProBuddyUser(@ModelAttribute("user") @Valid ProBuddyUserDTO user,
                                               BindingResult result){
@@ -61,6 +71,12 @@ public class UserController {
         }
     }
 
+    /**
+     * The controller method which routes to the page that can add a new connection to an existing user
+     * @param user this is the logged in user details(information)
+     * @param modelAndView this is a request scoped object injected for us by spring and it's stores attributes.
+     * @return ModelAndView which contains the stored attributes and objects we pass to the web page.
+     */
     @GetMapping("/user/addUserConnection")
     public ModelAndView addUserConnection(@AuthenticationPrincipal ProBuddyUserDetails user, ModelAndView modelAndView){
 
@@ -82,6 +98,15 @@ public class UserController {
         return modelAndView;
     }
 
+    /**
+     * The controller which will process the added connection email and add it to the user's contact list
+     * @param user this is the logged in user details(information)
+     * @param connectedUserEmail is the String email of the user to be connected to
+     * @param modelAndView this is a request scoped object injected for us by spring and it's stores attributes.
+     * @param redirectView an injected object which can perform a redirection to a url
+     * @param result the validation status of each input field in the form
+     * @return ModelAndView which contains the stored attributes and objects we pass to the web page.
+     */
     @PostMapping("/user/addUserConnection")
     public ModelAndView createAddUserConnection (@AuthenticationPrincipal  ProBuddyUserDetails user,
                                                  @ModelAttribute("connectedUserEmail") ProBuddyConnectedUserDTO connectedUserEmail, ModelAndView modelAndView,
@@ -130,6 +155,10 @@ public class UserController {
         return  modelAndView;
     }
 
+    /**
+     * The controller method which returns the default error page
+     * @return String that contains the url
+     */
     @GetMapping("/403")
     public String error(){
 

@@ -31,7 +31,7 @@
             <a class="nav-link" href="/user/home">Home</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/user/makeTransfer">Transfer</a>
+            <a class="nav-link" href="/user/transaction">Transfer</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/user/profile">Profile</a>
@@ -60,7 +60,7 @@
 
 <div class="container">
 
-    <label th:text="${errorMessage}"/>
+    <label class="errorMessage" th:text="${errorMessage}"/>
     <div class="row">
 
         <p class="col-sm-8">Send money</p>
@@ -69,7 +69,7 @@
        <a href="/user/addUserConnection" th:href="@{/user/addUserConnection}" class="btn btn-primary col-sm-4">Add connection</a>
 
     </div>
-    <form th:action="@{/user/makeTransfer}" th:object="${transferForm}" method="post">
+    <form th:action="@{/user/transaction}" th:object="${transferForm}" method="post">
         <div class="row border" style="margin-bottom: 30px;">
             <!-- <form th:action="@{/makeTransfer}" method="post"> -->
             <div class="col-sm-4 boxItem boxItemFirst">

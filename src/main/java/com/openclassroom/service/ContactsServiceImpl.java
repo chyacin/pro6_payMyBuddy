@@ -19,8 +19,11 @@ public class ContactsServiceImpl implements ContactsService{
      private UserService userService;
 
 
-
-
+    /**
+     * The service method to add an existing user to the logged in user contacts
+     * @param connectorUser the logged in user
+     * @param connectedUserEmail the user's email to be connected to
+     */
     @Override
     public void createContactsConnection(ProBuddyUser connectorUser, String connectedUserEmail) {
     if((!(connectorUser.getEmail().equals(connectedUserEmail))) && (userService.findUserByEmail(connectedUserEmail) != null)) {
@@ -33,6 +36,11 @@ public class ContactsServiceImpl implements ContactsService{
         }
     }
 
+    /**
+     * The service method which loads the contact list for the logged in user
+     * @param connectorUser the logged in user
+     * @return list of the connected users
+     */
     @Override
     public List<ProBuddyUser> findConnectedUserByConnectorUser(ProBuddyUser connectorUser) {
         if(connectorUser == null);
@@ -48,6 +56,12 @@ public class ContactsServiceImpl implements ContactsService{
         return connectedUserList;
     }
 
+    /**
+     * The service methods which loads contacts where logged in users connects to the other users
+     * @param loggedInUser the logged in user
+     * @param userToConnectTo the user to be connected to
+     * @return the list of existing connection
+     */
     @Override
     public List<ProBuddyContacts> findConnectionWithThisUser(ProBuddyUser loggedInUser, ProBuddyUser userToConnectTo) {
         return contactsRepository.findAllByFirstUserAndSecondUser(loggedInUser, userToConnectTo);

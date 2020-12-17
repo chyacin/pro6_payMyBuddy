@@ -20,6 +20,12 @@ public class HomeController {
     private ProBuddyUser proBuddyUser;
 
 
+    /**
+     * The controller method that routes the user to the home page
+     * @param user this is the logged in user details(information)
+     * @param modelAndView this is a request scoped object injected for us by spring and it's stores attributes.
+     * @return ModelAndView which contains the stored attributes and object we pass to the web page.
+     */
     @GetMapping("/user/home")
     public ModelAndView home(@AuthenticationPrincipal ProBuddyUserDetails user, ModelAndView modelAndView) {
         String loggedInName = user.getUsername(); //get logged in username
@@ -34,6 +40,11 @@ public class HomeController {
         return modelAndView;
     }
 
+    /**
+     * The controller method that routes the user to the contact page
+     * @param modelAndView this is a request scoped object injected for us by spring and it's stores attributes
+     * @return ModelAndView which contains the stored attributes and object we pass to the web page.
+     */
     @GetMapping("/user/contact")
     public ModelAndView contact( ModelAndView modelAndView) {
         modelAndView.setViewName("contact");

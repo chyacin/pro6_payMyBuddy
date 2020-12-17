@@ -109,7 +109,7 @@ public class TransactionControllerTest {
         when(contactsService.findConnectedUserByConnectorUser(proBuddyUser)).thenReturn(userList1);
         when(transactionsService.findAll()).thenReturn(transactionsList);
 
-        mockMvc.perform(get("/user/makeTransfer"))
+        mockMvc.perform(get("/user/transaction"))
                 .andExpect(status().is2xxSuccessful());
 
     }
@@ -175,7 +175,7 @@ public class TransactionControllerTest {
         when(transactionsService.findAll()).thenReturn(transactionsList);
         when(contactsService.findConnectedUserByConnectorUser(receiverUser)).thenReturn(receiverUserList);
 
-        mockMvc.perform(post("/user/makeTransfer")
+        mockMvc.perform(post("/user/transaction")
                 .requestAttr("transferForm",  transferFormDTO))
                 .andExpect(status().is2xxSuccessful());
 
@@ -240,7 +240,7 @@ public class TransactionControllerTest {
         when(transactionsService.findAll()).thenReturn(transactionsList);
         when(contactsService.findConnectedUserByConnectorUser(receiverUser)).thenReturn(receiverUserList);
 
-        mockMvc.perform(post("/user/makeTransfer"))
+        mockMvc.perform(post("/user/transaction"))
                 .andExpect(view().name("transaction"));
 
     }
@@ -304,7 +304,7 @@ public class TransactionControllerTest {
         when(transactionsService.findAll()).thenReturn(transactionsList);
         when(contactsService.findConnectedUserByConnectorUser(receiverUser)).thenReturn(receiverUserList);
 
-        mockMvc.perform(post("/user/makeTransfer"))
+        mockMvc.perform(post("/user/transaction"))
                 .andExpect(view().name("transaction"));
 
     }

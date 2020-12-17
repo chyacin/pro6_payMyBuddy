@@ -43,6 +43,12 @@ public class LoginController {
 	@Autowired
 	private LoginService loginService;
 
+
+	/**
+	 * The controller method that routes user to either the admin login history or to the home page depending on their access privilege
+	 * @param user this is the logged in user details(information)
+	 * @return String which contains the web page url.
+	 */
 	@GetMapping(value = "/")
 	public String getUser(@AuthenticationPrincipal ProBuddyUserDetails user) {
 
@@ -60,6 +66,11 @@ public class LoginController {
 		return "login";
 	}
 
+	/**
+	 * The controller method that routes user who have admin privileges
+	 * @param modelAndView this is a request scoped object injected for us by spring and it's stores attributes.
+	 * @return ModelAndView which contains the stored attributes and object we pass to the web page.
+	 */
 	@GetMapping(value = "/admin")
 	@RolesAllowed("ADMIN")
 	public ModelAndView getAdmin(ModelAndView modelAndView) {
@@ -68,6 +79,11 @@ public class LoginController {
 		return modelAndView;
 	}
 
+	/**
+	 * The controller method that routes to the login page
+	 * @param modelAndView this is a request scoped object injected for us by spring and it's stores attributes.
+	 * @return ModelAndView which contains the stored attributes and object we pass to the web page.
+	 */
 	// Login form
 	@GetMapping("/login")
 	public ModelAndView login(ModelAndView modelAndView) {
@@ -75,6 +91,12 @@ public class LoginController {
 		return modelAndView;
 	}
 
+	/**
+	 * The controller method that routes user who are admins to the admin login history
+	 * @param user this is the logged in user details(information)
+	 * @param modelAndView this is a request scoped object injected for us by spring and it's stores attributes.
+	 * @return ModelAndView which contains the stored attributes and object we pass to the web page.
+	 */
 	@GetMapping("/admin/loginHistory")
 	@RolesAllowed("ADMIN")
 	public ModelAndView loginHistory(@AuthenticationPrincipal ProBuddyUserDetails user,
@@ -109,6 +131,12 @@ public class LoginController {
 		return modelAndView;
 	}
 
+	/**
+	 * The controller method that logs us out when user wants to
+	 * @param request this is a request scoped object injected for us which performs the request
+	 * @param response this is a request scoped object injected for us which performs the response
+	 * @return String which contains the url page we redirected to.
+	 */
 	@GetMapping("/logout")
 	public String signOut(HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

@@ -36,6 +36,11 @@ public class TransactionController {
     @Autowired
     private TransactionsService transactionsService;
 
+    /**
+     *The controller method which routes to the transaction page but doesn't load the transactions
+     * @param modelAndView this is a request scoped object injected for us by spring and it's stores attributes.
+     * @return ModelAndView which contains the stored attributes and objects we pass to the web page.
+     */
     @GetMapping("/user/transfer")
     public ModelAndView transfer(ModelAndView modelAndView) {
         modelAndView.addObject("transferForm", new ProBuddyTransferFormDTO());
@@ -45,7 +50,16 @@ public class TransactionController {
 
     private double transactionFee = 0.05; // to put in a table in the database(mysql)
 
-    @GetMapping("/user/makeTransfer")
+    /**
+     * The controller method which routes to the transaction page and loads the transactions
+     * @param user this is the logged in user details(information)
+     * @param transferFormDTO this is a data transfer object used for the transfer form on the page
+     * @param modelAndView this is a request scoped object injected for us by spring and it's stores attributes.
+     * @param result the validation status of each input field in the form
+     * @param model this contains the object and attributes which can be passed to the web page
+     * @return ModelAndView which contains the stored attributes and objects we pass to the web page
+     */
+    @GetMapping("/user/transaction")
     public ModelAndView makeTransfer(@AuthenticationPrincipal ProBuddyUserDetails user, ProBuddyTransferFormDTO transferFormDTO,
                                      ModelAndView modelAndView, BindingResult result, Model model) {
 
@@ -93,10 +107,19 @@ public class TransactionController {
         return modelAndView;
     }
 
-    @PostMapping("/user/makeTransfer")
+
+    /**
+     * The controller method which processes the transfer form values and perform debit and credit from user to user
+     * @param user this is the logged in user details(information)
+     * @param transferFormDTO this is a data transfer object used for the transfer form on the page
+     * @param result the validation status of each input field in the form
+     * @param modelAndView this is a request scoped object injected for us by spring and it's stores attributes.
+     * @return ModelAndView which contains the stored attributes and objects we pass to the web page
+     */
+    @PostMapping("/user/transaction")
     public ModelAndView makeTransfer(@AuthenticationPrincipal ProBuddyUserDetails user,
                                      @ModelAttribute("transferForm") @Valid ProBuddyTransferFormDTO transferFormDTO,
-                                     BindingResult result, ModelAndView modelAndView, RedirectAttributes redirectAttributes) {
+                                     BindingResult result, ModelAndView modelAndView) {
 
 
         String loggedInName = user.getUsername(); //get logged in username
@@ -137,9 +160,14 @@ public class TransactionController {
                 modelAndView.addObject("message", "Transaction successful");
                 System.out.println("Transaction successful");
             } catch (InsufficientBalanceException e) {
-                modelAndView.addObject("message", "Insufficient balance");
+                modelAndView.setViewName("transaction");
+                modelAndView.addObject("dtoList", loadTransactionByUser(loggedInUser));
+             //   List<ProBuddyUser> connectedUserList = contactsService.findConnectedUserByConnectorUser(loggedInUser);
+                modelAndView.addObject("errorMessage", "Insufficient balance!");
+
+
                 System.out.println("Insufficient balance");
-                e.printStackTrace();
+                return modelAndView;
             }
             List<ProBuddyTransactions> transactionsList = transactionsService.findAllByAccount(loggedInUser.getAccount());
             List<ProBuddyTransactionDTO> dtoList = new ArrayList<>();
@@ -171,7 +199,7 @@ public class TransactionController {
 
             List<ProBuddyUser> connectedUserList = contactsService.findConnectedUserByConnectorUser(connectedBuddy);
 
-            modelAndView.setViewName("redirect:/user/makeTransfer");
+            modelAndView.setViewName("redirect:/user/transaction");
             modelAndView.addObject("connectedUserList", connectedUserList);
         } else {
             modelAndView.setViewName("transaction");
@@ -180,6 +208,11 @@ public class TransactionController {
         return modelAndView;
     }
 
+    /**
+     * The method that loads the transaction for a user and is used in several controller methods
+     * @param loggedInUser this is the logged in user
+     * @return List of probuddy transactions for a user
+     */
     private List<ProBuddyTransactionDTO> loadTransactionByUser(ProBuddyUser loggedInUser){
 
         List<ProBuddyTransactions> transactionsList = transactionsService.findAllByAccount(loggedInUser.getAccount());
@@ -209,7 +242,12 @@ public class TransactionController {
         return dtoList;
     }
 
-
+    /**
+     * The controller method which routes the user to the profile page
+     * @param user this is the logged in user details(information)
+     * @param modelAndView this is a request scoped object injected for us by spring and it's stores attributes.
+     * @return ModelAndView which contains the stored attributes and objects we pass to the web page.
+     */
     @GetMapping("/user/profile")
     public ModelAndView profile(@AuthenticationPrincipal ProBuddyUserDetails user, ModelAndView modelAndView) {
         String loggedInName = user.getUsername(); //get logged in username
@@ -234,6 +272,12 @@ public class TransactionController {
         return modelAndView;
     }
 
+
+
+    /**This method that creates a profile object for the user and is used in some controller methods
+     * @param loggedInUser this is the logged in user
+     * @return profile object for the user
+     */
     private ProBuddyProfileDTO loadProfilePerson(ProBuddyUser loggedInUser){
         ProBuddyProfileDTO proBuddyProfileDTO = new ProBuddyProfileDTO();
         proBuddyProfileDTO.setFirstName(loggedInUser.getFirstName());
@@ -244,7 +288,15 @@ public class TransactionController {
         return proBuddyProfileDTO;
     }
 
-
+    /**
+     * The controller method which processes deposit to the user's bank account from the user's probuddy account
+     * @param user this is the logged in user details(information)
+     * @param transaction is a data transfer object that contains the amount to be deposited
+     * @param result the validation status of each input field in the form
+     * @param modelAndView this is a request scoped object injected for us by spring and it's stores attributes.
+     * @return ModelAndView which contains the stored attributes and objects we pass to the web page.
+     * @throws InsufficientBalanceException is an application defined exception that get thrown when the user balance is insufficient for transaction
+     */
     @PostMapping("/user/depositToBank")
     public ModelAndView depositMoney(@AuthenticationPrincipal ProBuddyUserDetails user, @ModelAttribute("debit")
     @Valid ProBuddyDepositToBankDTO transaction,
@@ -279,6 +331,14 @@ public class TransactionController {
     }
 
 
+    /**
+     * The controller method which processes withdrawn from the user's bank account to the user's probuddy account
+     * @param user this is the logged in user details(information)
+     * @param transaction is a data transfer object that contains the amount to be withdrawn
+     * @param result the validation status of each input field in the form
+     * @param modelAndView this is a request scoped object injected for us by spring and it's stores attributes.
+     * @return ModelAndView which contains the stored attributes and objects we pass to the web page.
+     */
     @PostMapping("/user/withdrawFromBank")
     public ModelAndView withdrawMoney(@AuthenticationPrincipal ProBuddyUserDetails user, @ModelAttribute("credit") @Valid ProBuddyWithdrawFromBankDTO transaction,
                                       BindingResult result, ModelAndView modelAndView){

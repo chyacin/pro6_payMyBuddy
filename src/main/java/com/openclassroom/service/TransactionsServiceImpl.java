@@ -36,6 +36,14 @@ public class TransactionsServiceImpl implements TransactionsService {
     // 5% fee for every transaction in the app...user to user.
     private double transactionFee = 0.05;
 
+    /**
+     * The service method which debit the sending user and credit the receiving user
+     * @param sendingUserID the logged in user
+     * @param receivingUserID the connected user
+     * @param amount the amount to be transfer
+     * @param description the reason for the transfer
+     * @throws InsufficientBalanceException is an application defined exception that get thrown when the user balance is insufficient for transaction
+     */
     @Override
     @Transactional
     public void createTransactionByTransferMoney(int sendingUserID, int receivingUserID, Double amount,
@@ -79,11 +87,20 @@ public class TransactionsServiceImpl implements TransactionsService {
 
     }
 
+    /**
+     * The service method which finds all transaction
+     * @return List of all transactions
+     */
     @Override
     public List<ProBuddyTransactions> findAll() {
         return transactionsRepository.findAll();
     }
 
+    /**
+     * The service method which finds all the transaction of the users by their accounts
+     * @param account the account of the user
+     * @return List of all transactions by Sender or Receiver
+     */
     @Override
     public List<ProBuddyTransactions> findAllByAccount(ProBuddyAccount account) {
 
@@ -95,16 +112,18 @@ public class TransactionsServiceImpl implements TransactionsService {
 
     }
 
+    /**
+     * This service method processes withdrawn from the user's bank account to the user's probuddy Account
+     * @param user this is the user to be credited
+     * @param amount the amount to be withdrawn
+     */
     @Override
-    public void withdraw(ProBuddyUser user, double amount) throws InsufficientBalanceException
+    public void withdraw(ProBuddyUser user, double amount)
     {
 
         // Get the logged in user
         // Get his ProBuddyAccount object
         ProBuddyAccount account = accountService.findAccountByUserEmail(user.getEmail());
-        if((account.getBalance() - amount) < 0){
-            throw new InsufficientBalanceException("You have insufficient funds for this transaction");
-        }
 
         // credit the ProBuddyAccount with the given amount
         account.setBalance(account.getBalance() + amount);
@@ -130,6 +149,12 @@ public class TransactionsServiceImpl implements TransactionsService {
     }
 
 
+    /**
+     * This service method processes deposit into the user's bank account from the user's probuddy Account
+     * @param user, this is the user to be debited
+     * @param amount, the amount to be deposited
+     * @throws InsufficientBalanceException, is an application defined exception that get thrown when the user balance is insufficient for transaction
+     */
     @Override
     public void deposit(ProBuddyUser user, double amount) throws InsufficientBalanceException
     {
