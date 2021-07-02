@@ -1,5 +1,7 @@
 package com.openclassroom.modelDTO;
 
+import javax.validation.constraints.NotBlank;
+
 public class ProBuddyDepositToBankDTO {
 
     private double amount;

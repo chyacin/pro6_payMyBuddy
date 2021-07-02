@@ -31,7 +31,7 @@
             <a class="nav-link" href="/user/home">Home</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/user/transfer">Transfer</a>
+            <a class="nav-link" href="/user/transaction">Transfer</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/user/profile">Profile</a>
@@ -59,7 +59,7 @@
 </nav>
 <div class="container">
 
-    <label th:text="${message}"/>
+    <label class="errorMessage" th:text="${errorMessage}"/>
     <div class="row">
 
         <h2 class="col-sm-8">User profile</h2>
@@ -85,6 +85,7 @@
         <div class="row border" style="margin-bottom: 30px;">
             <div class="col-sm-3 boxItem">
                 <input class="form-control" placeholder="amount" th:field="${credit.amount}">
+                <p th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></p>
             </div>
             <div class="col-sm-5 text-right boxItem boxItemLast">
                 <button type="submit" class="btn btn-success btn-xl">Deposit</button>

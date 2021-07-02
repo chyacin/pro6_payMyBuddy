@@ -31,7 +31,7 @@
             <a class="nav-link" href="/user/home">Home</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/user/transfer">Transfer</a>
+            <a class="nav-link" href="/user/transaction">Transfer</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/user/profile">Profile</a>
@@ -60,7 +60,7 @@
 
 <div class="container">
 
-    <label th:text="${message}"/>
+    <label class="errorMessage" th:text="${errorMessage}"/>
     <div class="row">
 
         <p class="col-sm-8">Send money</p>
@@ -69,21 +69,23 @@
        <a href="/user/addUserConnection" th:href="@{/user/addUserConnection}" class="btn btn-primary col-sm-4">Add connection</a>
 
     </div>
-    <form th:action="@{/user/makeTransfer}" th:object="${transferForm}" method="post">
+    <form th:action="@{/user/transaction}" th:object="${transferForm}" method="post">
         <div class="row border" style="margin-bottom: 30px;">
             <!-- <form th:action="@{/makeTransfer}" method="post"> -->
             <div class="col-sm-4 boxItem boxItemFirst">
             <select class="form-control" th:field="*{connectedUserEmail}">
-                    <option value="---">Select a connection</option>
+                    <option value="">Select a connection</option>
                 <option th:each="userEmail:${connectedUserList}"
                             th:value="${userEmail.email}"
                             th:text="${userEmail.email}">
                     </option>
                 </select>
+                <p th:if="${#fields.hasErrors('connectedUserEmail')}" th:errors="*{connectedUserEmail}"></p>
             </div>
             <div class="col-sm-3 boxItem">
                 <input class="form-control" placeholder="The amount" th:field="*{amount}">
                 <input class="form-control"  placeholder="Description" th:field="*{description}">
+                <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
             </div>
             <div class="col-sm-5 text-right boxItem boxItemLast">
                 <button type="submit" class="btn btn-success btn-xl">Pay</button>
@@ -108,16 +110,6 @@
                 <td th:text="${dto.userName}">Example1</td>
                 <td th:text="${dto.description}">Example2</td>
                 <td th:text="${'$' + dto.amount}">$12.00</td>
-            </tr>
-            <tr>
-                <td>transaction2</td>
-                <td>Cable bill</td>
-                <td>$20</td>
-            </tr>
-            <tr>
-                <td>transaction3</td>
-                <td>Cinema</td>
-                <td>$5</td>
             </tr>
             </tbody>
         </table>
@@ -162,5 +154,3 @@
 
 </body>
 </html>
-
-<!-- th:remove="all-but-first"> -->

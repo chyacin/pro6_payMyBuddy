@@ -31,7 +31,7 @@
             <a class="nav-link" href="/user/home">Home</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/user/transfer">Transfer</a>
+            <a class="nav-link" href="/user/transaction">Transfer</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/user/profile">Profile</a>
@@ -60,18 +60,19 @@
 
 <div class="container">
 
-    <label th:text="${message}"/>
+    <label th:text="${errorMessage}"/>
     <div class="row">
 
         <p class="col-sm-8">Add your buddy</p>
 
 
     </div>
-    <form th:action="@{/user/addUserConnection}"  method="post">
+    <form th:action="@{/user/addUserConnection}"  th:object="${connectedUserEmail}" method="post">
         <div class="row border" style="margin-bottom: 30px;">
 
             <div class="col-sm-3 boxItem">
-                <input class="form-control" placeholder="find your buddy" name="connectedUserEmail">
+                <input class="form-control" placeholder="find your buddy" name="connectionEmail">
+                <p th:if="${#fields.hasErrors('connectionEmail')}" th:errors="*{connectionEmail}"></p>
             </div>
             <div class="col-sm-5 text-right boxItem boxItemLast">
                 <button type="submit" class="btn btn-success btn-xl">Buddy Connection</button>

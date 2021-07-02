@@ -22,6 +22,12 @@ public class LoginServiceImpl implements LoginService {
     private UserRepository userRepository;
 
 
+    /**
+     * The service method which saves a logged in user login history
+     * @param user the logged in user
+     * @param date the date he logged in
+     * @param success if the login was successful or not
+     */
     @Override
     @Transactional
     public void createLoginHistory(ProBuddyUser user, Timestamp date, Boolean success) {
@@ -38,6 +44,10 @@ public class LoginServiceImpl implements LoginService {
         loginRepository.save(loginSession);
     }
 
+    /**
+     * The service method which find all logins
+     * @return list of all logins
+     */
     @Override
     public List<ProBuddyLogin> findAllLogins() {
 

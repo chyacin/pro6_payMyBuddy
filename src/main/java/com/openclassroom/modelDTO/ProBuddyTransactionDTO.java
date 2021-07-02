@@ -75,4 +75,6 @@ public class ProBuddyTransactionDTO {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
 }

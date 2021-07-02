@@ -27,6 +27,12 @@ public class  UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private LoginService loginService;
 
+    /**
+     * The service method which creates a user details object from the given email
+     * @param email the email address logged in with
+     * @return the User detail object
+     * @throws UsernameNotFoundException an exception which is thrown if the user is not found in the database
+     */
     @Override
     @Transactional
     public ProBuddyUserDetails loadUserByUsername(String email)
@@ -34,8 +40,6 @@ public class  UserDetailsServiceImpl implements UserDetailsService {
         ProBuddyUser proBuddyUser = userRepository.findUserByEmail(email);
 
         if (proBuddyUser == null) {
-        //    loginService.createLoginHistory(null, Timestamp.from(Instant.now()), false);
-
             throw new UsernameNotFoundException("Could not find user");
 
         }

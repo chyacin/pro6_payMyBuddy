@@ -11,6 +11,10 @@ public class RoleServiceImpl implements RoleService{
     @Autowired
     private RoleRepository roleRepository;
 
+    /**
+     * The service method which saves a role for a user
+     * @param proBuddyRole the role to be saved
+     */
     @Override
     public void createRole(ProBuddyRole proBuddyRole) {
 
@@ -18,6 +22,12 @@ public class RoleServiceImpl implements RoleService{
          roleRepository.save(proBuddyRole);
         }
     }
+
+    /**
+     * The service method which get the role by name
+     * @param name the name of the given role
+     * @return the found role name
+     */
     @Override
     public ProBuddyRole getRoleByName(String name) {
 

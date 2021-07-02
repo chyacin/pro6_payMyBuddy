@@ -28,7 +28,7 @@ public class RoleServiceImplTest {
 
 
     @Test
-    public void createRole_returnRole(){
+    public void createUserRole_returnUserRole(){
         //arrange
 
         ProBuddyRole proBuddyRole = new ProBuddyRole();
@@ -45,7 +45,24 @@ public class RoleServiceImplTest {
     }
 
     @Test
-    public void findRoleByName_returnRoleByName(){
+    public void createAdminRole_returnAdminRole(){
+        //arrange
+
+        ProBuddyRole proBuddyRole = new ProBuddyRole();
+        proBuddyRole.setName("ADMIN");
+
+        when(roleRepository.save(proBuddyRole)).thenReturn(proBuddyRole);
+
+        //act
+        roleService.createRole(proBuddyRole);
+
+        //assert
+        Mockito.verify(roleRepository, times(1)).save(any(ProBuddyRole.class));
+
+    }
+
+    @Test
+    public void findRoleByUserName_returnRoleByName(){
 
         //arrange
         ProBuddyRole proBuddyRole = new ProBuddyRole();
@@ -59,6 +76,25 @@ public class RoleServiceImplTest {
         //assert
         assertNotNull(result);
         assertEquals("USER", result.getName());
+
+
+    }
+
+    @Test
+    public void findRoleByAdminName_returnRoleByName(){
+
+        //arrange
+        ProBuddyRole proBuddyRole = new ProBuddyRole();
+        proBuddyRole.setName("ADMIN");
+
+        when(roleRepository.findByName(proBuddyRole.getName())).thenReturn(proBuddyRole);
+
+        //act
+        ProBuddyRole result = roleService.getRoleByName("ADMIN");
+
+        //assert
+        assertNotNull(result);
+        assertEquals("ADMIN", result.getName());
 
 
     }

@@ -10,4 +10,6 @@ class Pro6PayMyBuddyApplicationTests {
 	void contextLoads() {
 	}
 
+
+
 }

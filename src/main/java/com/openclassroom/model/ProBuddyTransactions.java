@@ -10,19 +10,20 @@ public class ProBuddyTransactions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sender_account_id")
     private ProBuddyAccount senderAccount;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "receiver_account_id")
     private ProBuddyAccount receiverAccount;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "receiver_user_id")
     private ProBuddyUser receiver;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sender_user_id")
     private ProBuddyUser sender;
 
+    private String userName;
     private String description;
     private double amount;
     private double fee;
@@ -131,5 +132,9 @@ public class ProBuddyTransactions {
 
     public void setDate(Timestamp date) {
         this.date = date;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

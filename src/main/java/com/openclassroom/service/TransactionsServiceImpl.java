@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionsServiceImpl implements TransactionsService {
@@ -34,6 +36,14 @@ public class TransactionsServiceImpl implements TransactionsService {
     // 5% fee for every transaction in the app...user to user.
     private double transactionFee = 0.05;
 
+    /**
+     * The service method which debit the sending user and credit the receiving user
+     * @param sendingUserID the logged in user
+     * @param receivingUserID the connected user
+     * @param amount the amount to be transfer
+     * @param description the reason for the transfer
+     * @throws InsufficientBalanceException is an application defined exception that get thrown when the user balance is insufficient for transaction
+     */
     @Override
     @Transactional
     public void createTransactionByTransferMoney(int sendingUserID, int receivingUserID, Double amount,
@@ -70,21 +80,47 @@ public class TransactionsServiceImpl implements TransactionsService {
         createTransaction.setSenderAccount(senderAccount);
         createTransaction.setReceiverAccount(receiverAccount);
         createTransaction.setDescription(description);
-        createTransaction.setAmount(amount);
+        createTransaction.setAmount(totalCharge);
         createTransaction.setDate(date);
 
         transactionsRepository.save(createTransaction);
 
     }
 
+    /**
+     * The service method which finds all transaction
+     * @return List of all transactions
+     */
     @Override
     public List<ProBuddyTransactions> findAll() {
         return transactionsRepository.findAll();
     }
 
+    /**
+     * The service method which finds all the transaction of the users by their accounts
+     * @param account the account of the user
+     * @return List of all transactions by Sender or Receiver
+     */
+    @Override
+    public List<ProBuddyTransactions> findAllByAccount(ProBuddyAccount account) {
+
+        //List<ProBuddyTransactions> buddyTransactionsList = new ArrayList<>();
+        //buddyTransactionsList.addAll(transactionsRepository.findAllBySenderAccount(account));
+        //buddyTransactionsList.addAll(transactionsRepository.findAllByReceiverAccount(account));
+
+        return transactionsRepository.findAllBySenderAccountOrReceiverAccount(account, account);
+
+    }
+
+    /**
+     * This service method processes withdrawn from the user's bank account to the user's probuddy Account
+     * @param user this is the user to be credited
+     * @param amount the amount to be withdrawn
+     */
     @Override
     public void withdraw(ProBuddyUser user, double amount)
     {
+
         // Get the logged in user
         // Get his ProBuddyAccount object
         ProBuddyAccount account = accountService.findAccountByUserEmail(user.getEmail());
@@ -95,9 +131,30 @@ public class TransactionsServiceImpl implements TransactionsService {
         //accountService.updateAccount(account);
         accountRepository.save(account);
 
+        Timestamp date= Timestamp.from(Instant.now());
+
+        ProBuddyTransactions createTransaction = new ProBuddyTransactions();
+        createTransaction.setReceiver(account.getUser());
+        createTransaction.setSender(null);
+        createTransaction.setFee(0.0);
+        createTransaction.setSenderAccount(null);
+        createTransaction.setReceiverAccount(account);
+        createTransaction.setDescription("Withdrawal from bank to user account");
+        createTransaction.setAmount(amount);
+        createTransaction.setDate(date);
+
+        transactionsRepository.save(createTransaction);
+
+
     }
 
 
+    /**
+     * This service method processes deposit into the user's bank account from the user's probuddy Account
+     * @param user, this is the user to be debited
+     * @param amount, the amount to be deposited
+     * @throws InsufficientBalanceException, is an application defined exception that get thrown when the user balance is insufficient for transaction
+     */
     @Override
     public void deposit(ProBuddyUser user, double amount) throws InsufficientBalanceException
     {
@@ -111,6 +168,21 @@ public class TransactionsServiceImpl implements TransactionsService {
         // Call account service updateAccount method to save it
         //accountService.updateAccount(account);
         accountRepository.save(account);
+
+        Timestamp date= Timestamp.from(Instant.now());
+
+        ProBuddyTransactions createTransaction = new ProBuddyTransactions();
+        createTransaction.setReceiver(null);
+        createTransaction.setSender(account.getUser());
+        createTransaction.setFee(0.0);
+        createTransaction.setSenderAccount(account);
+        createTransaction.setReceiverAccount(null);
+        createTransaction.setDescription("Deposit to bank from user account");
+        createTransaction.setAmount(amount);
+        createTransaction.setDate(date);
+
+        transactionsRepository.save(createTransaction);
+
     }
 
 }
