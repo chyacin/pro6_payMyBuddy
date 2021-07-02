@@ -28,8 +28,8 @@ public class Pro6PayMyBuddyApplication {
 
 	}
 
-/*
-	@Bean
+
+/*	@Bean
 	CommandLineRunner init(RoleRepository roleRepository, UserRepository userRepository, AccountRepository accountRepository) {
 		return args -> {
 			// Check the database table ProBuddyContacts manually
